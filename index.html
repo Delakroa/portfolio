@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Дмитрий Халиков — QA Engineer</title>
+  <style>
+    /* ── Reset & Base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0a0a0f;
+      --surface:   #111118;
+      --border:    rgba(255,255,255,.07);
+      --text:      #e8e8f0;
+      --muted:     #6b6b80;
+      --accent1:   #6c63ff;
+      --accent2:   #ff6584;
+      --accent3:   #43e97b;
+      --radius:    16px;
+      --nav-h:     64px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── Animated mesh background ─────────────────────────────── */
+    .mesh {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(108,99,255,.18) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 90%, rgba(255,101,132,.12) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 60% 40%, rgba(67,233,123,.08) 0%, transparent 60%);
+      animation: meshShift 12s ease-in-out infinite alternate;
+    }
+    @keyframes meshShift {
+      0%   { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(30deg); }
+    }
+
+    /* ── Noise grain overlay ──────────────────────────────────── */
+    body::after {
+      content: '';
+      position: fixed; inset: 0; z-index: 1; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+      opacity: .4;
+    }
+
+    /* ── Layout ───────────────────────────────────────────────── */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 2; }
+
+    /* ── Nav ──────────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h);
+      z-index: 100;
+      backdrop-filter: blur(20px) saturate(180%);
+      background: rgba(10,10,15,.6);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center;
+    }
+    nav .inner {
+      max-width: 1100px; margin: 0 auto; padding: 0 24px;
+      width: 100%; display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      font-weight: 700; font-size: 1.1rem; letter-spacing: -.5px;
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none; font-size: .9rem;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── Hero ─────────────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh; display: flex; align-items: center;
+      padding-top: var(--nav-h);
+    }
+    .hero-inner { display: flex; flex-direction: column; gap: 24px; max-width: 680px; }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(108,99,255,.12);
+      border: 1px solid rgba(108,99,255,.3);
+      border-radius: 100px; padding: 6px 14px;
+      font-size: .8rem; color: #a89fff; width: fit-content;
+    }
+    .hero-badge span { width: 7px; height: 7px; border-radius: 50%; background: var(--accent3); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .6; transform: scale(1.3); } }
+
+    .hero-title {
+      font-size: clamp(2.8rem, 6vw, 4.5rem);
+      font-weight: 800; line-height: 1.1; letter-spacing: -2px;
+    }
+    .hero-title .highlight {
+      background: linear-gradient(135deg, var(--accent1) 0%, var(--accent2) 60%, #ff9f43 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    .hero-sub { font-size: 1.1rem; color: var(--muted); max-width: 500px; }
+
+    .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 24px; border-radius: 100px;
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      color: #fff; font-weight: 600; font-size: .95rem;
+      border: none; cursor: pointer; text-decoration: none;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 4px 24px rgba(108,99,255,.35);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(108,99,255,.5); }
+
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 24px; border-radius: 100px;
+      background: transparent; color: var(--text); font-weight: 600; font-size: .95rem;
+      border: 1px solid var(--border); cursor: pointer; text-decoration: none;
+      transition: border-color .2s, background .2s;
+    }
+    .btn-outline:hover { border-color: var(--accent1); background: rgba(108,99,255,.08); }
+
+    .hero-scroll {
+      position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: var(--muted); font-size: .75rem; letter-spacing: 1px; text-transform: uppercase;
+      animation: bounce 2s ease-in-out infinite;
+    }
+    .hero-scroll svg { width: 20px; height: 20px; stroke: var(--muted); }
+    @keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(6px); } }
+
+    /* ── Section base ─────────────────────────────────────────── */
+    section { padding: 100px 0; position: relative; z-index: 2; }
+    .section-label {
+      font-size: .75rem; font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--accent1); margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 800; letter-spacing: -1px; margin-bottom: 48px;
+    }
+
+    /* ── About ────────────────────────────────────────────────── */
+    #about .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;
+    }
+    .about-text p { color: var(--muted); margin-bottom: 16px; }
+    .about-text p strong { color: var(--text); }
+
+    .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 24px; transition: border-color .3s;
+    }
+    .stat-card:hover { border-color: rgba(108,99,255,.4); }
+    .stat-num { font-size: 2.2rem; font-weight: 800; letter-spacing: -1px;
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .stat-label { font-size: .85rem; color: var(--muted); margin-top: 4px; }
+
+    /* ── Skills ───────────────────────────────────────────────── */
+    #skills { background: var(--surface); }
+    #skills::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent, rgba(108,99,255,.04), transparent);
+      pointer-events: none;
+    }
+
+    .skills-grid { display: flex; flex-wrap: wrap; gap: 12px; }
+    .skill-chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 18px; border-radius: 100px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--border);
+      font-size: .9rem; font-weight: 500;
+      transition: all .25s; cursor: default;
+    }
+    .skill-chip:hover {
+      background: rgba(108,99,255,.12);
+      border-color: rgba(108,99,255,.4);
+      transform: translateY(-2px);
+      color: #c4bfff;
+    }
+    .skill-chip .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+    }
+
+    /* ── Experience ───────────────────────────────────────────── */
+    .timeline { display: flex; flex-direction: column; gap: 0; }
+    .tl-item {
+      display: grid; grid-template-columns: 140px 1px 1fr; gap: 0 28px;
+      position: relative;
+    }
+    .tl-date { text-align: right; color: var(--muted); font-size: .85rem; padding-top: 4px; }
+    .tl-line {
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .tl-dot {
+      width: 12px; height: 12px; border-radius: 50%;
+      background: var(--accent1); flex-shrink: 0;
+      box-shadow: 0 0 0 4px rgba(108,99,255,.2);
+      margin-top: 5px;
+    }
+    .tl-connector {
+      width: 1px; flex: 1; background: var(--border); min-height: 40px;
+    }
+    .tl-content {
+      padding-bottom: 40px;
+    }
+    .tl-item:last-child .tl-connector { display: none; }
+    .tl-company { font-size: .8rem; color: var(--accent1); font-weight: 600; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px; }
+    .tl-role { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+    .tl-desc { color: var(--muted); font-size: .9rem; }
+
+    /* ── Projects — Bento Grid ────────────────────────────────── */
+    #projects { background: var(--surface); }
+    .bento { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+    .bento-card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px;
+      transition: border-color .3s, transform .3s; cursor: pointer;
+      overflow: hidden; position: relative;
+    }
+    .bento-card:hover { border-color: rgba(108,99,255,.5); transform: translateY(-4px); }
+    .bento-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(108,99,255,.06), transparent);
+      opacity: 0; transition: opacity .3s;
+    }
+    .bento-card:hover::before { opacity: 1; }
+
+    .bento-card.col-4 { grid-column: span 4; }
+    .bento-card.col-2 { grid-column: span 2; }
+    .bento-card.col-3 { grid-column: span 3; }
+
+    .card-icon { font-size: 2rem; margin-bottom: 16px; }
+    .card-tag {
+      display: inline-block; font-size: .7rem; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; padding: 3px 10px; border-radius: 100px;
+      margin-bottom: 12px;
+    }
+    .tag-purple { background: rgba(108,99,255,.15); color: #a89fff; }
+    .tag-pink   { background: rgba(255,101,132,.15); color: #ff8fa3; }
+    .tag-green  { background: rgba(67,233,123,.15);  color: #6effa0; }
+
+    .card-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+    .card-desc  { font-size: .875rem; color: var(--muted); }
+    .card-tech  { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+    .tech-badge {
+      font-size: .72rem; padding: 2px 10px; border-radius: 100px;
+      background: rgba(255,255,255,.06); color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .bento-card.featured .card-title { font-size: 1.5rem; }
+    .card-arrow {
+      position: absolute; right: 24px; top: 24px; width: 36px; height: 36px;
+      border-radius: 50%; background: rgba(108,99,255,.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; transition: background .2s;
+    }
+    .bento-card:hover .card-arrow { background: var(--accent1); }
+
+    /* ── Contact ──────────────────────────────────────────────── */
+    #contact .contact-box {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 24px; padding: 64px; text-align: center;
+      position: relative; overflow: hidden;
+    }
+    #contact .contact-box::before {
+      content: ''; position: absolute;
+      width: 400px; height: 400px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(108,99,255,.15), transparent 70%);
+      top: -100px; left: 50%; transform: translateX(-50%);
+      pointer-events: none;
+    }
+    .contact-title { font-size: 2.5rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 16px; }
+    .contact-sub { color: var(--muted); margin-bottom: 40px; max-width: 400px; margin-left: auto; margin-right: auto; }
+    .social-links { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .social-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 20px; border-radius: 100px;
+      background: rgba(255,255,255,.05); border: 1px solid var(--border);
+      color: var(--text); text-decoration: none; font-size: .9rem;
+      transition: all .2s;
+    }
+    .social-link:hover { background: rgba(108,99,255,.12); border-color: var(--accent1); }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border); padding: 32px 0;
+      text-align: center; color: var(--muted); font-size: .85rem;
+      position: relative; z-index: 2;
+    }
+
+    /* ── AI Tools ────────────────────────────────────────────── */
+    .ai-statement {
+      display: flex; align-items: flex-start; gap: 20px;
+      background: rgba(108,99,255,.06); border: 1px solid rgba(108,99,255,.2);
+      border-radius: var(--radius); padding: 24px 28px; margin-bottom: 48px;
+    }
+    .ai-statement-icon { font-size: 2rem; flex-shrink: 0; }
+    .ai-statement p { color: var(--muted); font-size: 1rem; line-height: 1.7; }
+    .ai-statement p strong { color: var(--text); }
+
+    .ai-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .ai-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px;
+      position: relative; overflow: hidden;
+      transition: border-color .3s, transform .3s;
+    }
+    .ai-card:hover { border-color: rgba(108,99,255,.5); transform: translateY(-4px); }
+    .ai-card-featured {
+      grid-column: span 2;
+      background: linear-gradient(135deg, rgba(108,99,255,.1), rgba(255,101,132,.05));
+      border-color: rgba(108,99,255,.25);
+    }
+    .ai-card-dark { background: rgba(255,255,255,.02); }
+    .ai-card-glow {
+      position: absolute; width: 200px; height: 200px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(108,99,255,.15), transparent 70%);
+      top: -60px; right: -60px; pointer-events: none;
+    }
+    .ai-badge {
+      display: inline-block; font-size: .68rem; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 3px 10px; border-radius: 100px;
+      background: rgba(108,99,255,.15); color: #a89fff;
+      border: 1px solid rgba(108,99,255,.25);
+      margin-bottom: 16px;
+    }
+    .ai-card-icon { font-size: 1.8rem; margin-bottom: 12px; }
+    .ai-card-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; }
+    .ai-card-desc { font-size: .875rem; color: var(--muted); line-height: 1.65; margin-bottom: 16px; }
+    .ai-card-examples {
+      display: flex; flex-wrap: wrap; gap: 6px;
+    }
+    .ai-card-examples span {
+      font-size: .72rem; padding: 3px 10px; border-radius: 100px;
+      background: rgba(255,255,255,.05); border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    @media (max-width: 768px) {
+      .ai-grid { grid-template-columns: 1fr; }
+      .ai-card-featured { grid-column: span 1; }
+    }
+
+    /* ── Architecture layers ─────────────────────────────────── */
+    .arch-layers { display: flex; flex-direction: column; gap: 0; max-width: 780px; }
+    .arch-layer {
+      background: var(--bg); border: 1px solid var(--border);
+      border-left: 3px solid var(--layer-color);
+      border-radius: var(--radius); padding: 20px 24px;
+      transition: border-color .3s, transform .2s;
+      display: grid; grid-template-columns: 40px 160px 1fr auto; align-items: center; gap: 16px;
+    }
+    .arch-layer:hover { transform: translateX(4px); border-color: var(--layer-color); }
+    .arch-layer-icon { font-size: 1.4rem; }
+    .arch-layer-name { font-weight: 700; font-size: .95rem; color: var(--layer-color); }
+    .arch-layer-desc { font-size: .85rem; color: var(--muted); }
+    .arch-layer-tech { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+    .arch-layer-tech span {
+      font-size: .7rem; padding: 2px 8px; border-radius: 100px;
+      background: rgba(255,255,255,.05); border: 1px solid var(--border);
+      color: var(--muted); white-space: nowrap;
+    }
+    .arch-arrow {
+      text-align: center; color: var(--border); font-size: 1.2rem;
+      padding: 4px 0; margin-left: 52px;
+    }
+
+    /* ── Patterns grid ───────────────────────────────────────── */
+    .patterns-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    }
+    .pattern-card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 24px;
+      transition: border-color .3s, transform .3s;
+    }
+    .pattern-card:hover { border-color: rgba(108,99,255,.4); transform: translateY(-3px); }
+    .pattern-icon { font-size: 1.6rem; margin-bottom: 12px; }
+    .pattern-name { font-weight: 700; font-size: 1rem; margin-bottom: 8px; }
+    .pattern-desc { font-size: .85rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── Code window ─────────────────────────────────────────── */
+    .code-window {
+      background: #0d0d14; border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,.4);
+    }
+    .code-header {
+      background: #16161f; padding: 12px 16px;
+      display: flex; align-items: center; gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .code-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .code-filename { font-size: .8rem; color: var(--muted); margin-left: 8px; font-family: monospace; }
+    .code-body {
+      padding: 24px 28px; margin: 0; overflow-x: auto;
+      font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+      font-size: .82rem; line-height: 1.8;
+    }
+    .code-body code { display: block; }
+    .c-keyword  { color: #c792ea; }
+    .c-class    { color: #82aaff; }
+    .c-method   { color: #82e0aa; }
+    .c-annotation { color: #ffcb6b; }
+    .c-string   { color: #c3e88d; }
+    .c-comment  { color: #546e7a; font-style: italic; }
+
+    @media (max-width: 768px) {
+      .arch-layer { grid-template-columns: 32px 1fr; grid-template-rows: auto auto auto; }
+      .arch-layer-tech { justify-content: flex-start; grid-column: 1/-1; }
+      .patterns-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── Scroll reveal ────────────────────────────────────────── */
+    .reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .reveal-delay-3 { transition-delay: .3s; }
+
+    /* ── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      #about .about-grid { grid-template-columns: 1fr; }
+      .bento-card.col-4, .bento-card.col-2, .bento-card.col-3 { grid-column: span 6; }
+      .tl-date { display: none; }
+      .tl-item { grid-template-columns: 1px 1fr; }
+      #contact .contact-box { padding: 40px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Animated background -->
+  <div class="mesh"></div>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="inner">
+      <div class="nav-logo">DH.</div>
+      <ul class="nav-links">
+        <li><a href="#about">О себе</a></li>
+        <li><a href="#skills">Навыки</a></li>
+        <li><a href="#ai-tools">AI</a></li>
+        <li><a href="#experience">Опыт</a></li>
+        <li><a href="#approach">Подход</a></li>
+        <li><a href="#projects">Проекты</a></li>
+        <li><a href="#contact">Контакты</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section id="hero">
+    <div class="container" style="position:relative;">
+      <div class="hero-inner">
+        <div class="hero-badge">
+          <span></span>
+          Открыт к предложениям
+        </div>
+        <h1 class="hero-title">
+          Дмитрий<br>
+          <span class="highlight">Халиков</span>
+        </h1>
+        <p class="hero-sub">
+          QA Engineer · Test Automation · Java &amp; Python<br>
+          Нахожу баги глубже пользовательского уровня — понимаю системы
+          изнутри, потому что сам их строил и испытывал.
+        </p>
+        <div class="hero-cta">
+          <a href="#projects" class="btn-primary">Посмотреть проекты →</a>
+          <a href="#contact" class="btn-outline">Связаться</a>
+        </div>
+      </div>
+
+      <div class="hero-scroll">
+        <span>Скролл</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+          <path d="M12 5v14M5 12l7 7 7-7" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about">
+    <div class="container">
+      <div class="section-label">О себе</div>
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <h2 class="section-title">Привет, я Дмитрий</h2>
+          <p>QA Engineer с <strong>аналитическим мышлением</strong> и нестандартным путём в профессию. До IT — 10+ лет в промышленной инженерии: наладка сложных систем, испытания оборудования, техническая документация.</p>
+          <p>Этот бэкграунд даёт мне суперсилу в тестировании: я понимаю поведение системы <strong>глубже пользовательского уровня</strong> — на уровне логики, архитектуры и краевых состояний.</p>
+          <p>Сейчас в <strong>SevenTech</strong> тестирую front + back сложных интеграционных решений. Умею находить неочевидные баги и ценю предсказуемость и прозрачность процессов.</p>
+          <div style="margin-top: 28px; display:flex; gap:12px; flex-wrap:wrap;">
+            <a href="mailto:i@dhollow.ru" class="btn-outline" style="font-size:.85rem; padding: 10px 20px;">
+              ✉️ i@dhollow.ru
+            </a>
+            <a href="https://github.com/Delakroa" target="_blank" class="btn-outline" style="font-size:.85rem; padding: 10px 20px;">
+              ⬡ GitHub
+            </a>
+          </div>
+        </div>
+        <div class="about-stats reveal reveal-delay-2">
+          <div class="stat-card">
+            <div class="stat-num">19</div>
+            <div class="stat-label">Лет общего опыта работы</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">2+</div>
+            <div class="stat-label">Года в QA Automation</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">front<br>+ back</div>
+            <div class="stat-label" style="margin-top:2px">Тестирование на текущем проекте</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">Тверь</div>
+            <div class="stat-label">Удалённо / офис</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills -->
+  <section id="skills">
+    <div class="container">
+      <div class="section-label">Навыки</div>
+      <h2 class="section-title reveal">Инструменты качества</h2>
+      <div style="margin-bottom: 24px;">
+        <div style="font-size:.8rem; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin-bottom: 12px;">Языки & Фреймворки</div>
+        <div class="skills-grid reveal">
+          <div class="skill-chip"><span class="dot" style="background:#f89820"></span> Java 21</div>
+          <div class="skill-chip"><span class="dot" style="background:#3572A5"></span> Python</div>
+          <div class="skill-chip"><span class="dot" style="background:#6db33f"></span> Spring Boot 3</div>
+          <div class="skill-chip"><span class="dot" style="background:#e53935"></span> JUnit 5</div>
+          <div class="skill-chip"><span class="dot" style="background:#c21325"></span> Gradle (Kotlin DSL)</div>
+          <div class="skill-chip"><span class="dot" style="background:#f05032"></span> Git</div>
+        </div>
+      </div>
+      <div style="margin-bottom: 24px;">
+        <div style="font-size:.8rem; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin-bottom: 12px;">UI & API Automation</div>
+        <div class="skills-grid reveal reveal-delay-1">
+          <div class="skill-chip"><span class="dot" style="background:#2d9b27"></span> Playwright</div>
+          <div class="skill-chip"><span class="dot" style="background:#25a244"></span> Selenide</div>
+          <div class="skill-chip"><span class="dot" style="background:#25a244"></span> Selenium WebDriver</div>
+          <div class="skill-chip"><span class="dot" style="background:#00bcd4"></span> REST Assured</div>
+          <div class="skill-chip"><span class="dot" style="background:#ff6c37"></span> Postman</div>
+          <div class="skill-chip"><span class="dot" style="background:#6c63ff"></span> gRPC</div>
+          <div class="skill-chip"><span class="dot" style="background:#231f20"></span> Kafka</div>
+          <div class="skill-chip"><span class="dot" style="background:#dc382d"></span> JMeter</div>
+        </div>
+      </div>
+      <div style="margin-bottom: 24px;">
+        <div style="font-size:.8rem; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin-bottom: 12px;">Отчётность & Инфраструктура</div>
+        <div class="skills-grid reveal reveal-delay-2">
+          <div class="skill-chip"><span class="dot" style="background:#85ea2d"></span> Allure Report</div>
+          <div class="skill-chip"><span class="dot" style="background:#336791"></span> PostgreSQL / JDBI</div>
+          <div class="skill-chip"><span class="dot" style="background:#336791"></span> DataGrip / SQL</div>
+          <div class="skill-chip"><span class="dot" style="background:#326ce5"></span> Kubernetes</div>
+          <div class="skill-chip"><span class="dot" style="background:#ff9900"></span> AWS S3</div>
+          <div class="skill-chip"><span class="dot" style="background:#e53935"></span> Keycloak / OAuth2</div>
+          <div class="skill-chip"><span class="dot" style="background:#FCC624"></span> Linux</div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:.8rem; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin-bottom: 12px;">Процессы & Инструменты</div>
+        <div class="skills-grid reveal reveal-delay-3">
+          <div class="skill-chip"><span class="dot" style="background:#0052cc"></span> Jira</div>
+          <div class="skill-chip"><span class="dot" style="background:#6c63ff"></span> TMS (кастомный)</div>
+          <div class="skill-chip"><span class="dot" style="background:#43e97b"></span> Test Case / Check-list</div>
+          <div class="skill-chip"><span class="dot" style="background:#ff9800"></span> Bug Reporting</div>
+          <div class="skill-chip"><span class="dot" style="background:#e03885"></span> UI + API + DB тестирование</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI Tools -->
+  <section id="ai-tools">
+    <div class="container">
+      <div class="section-label">AI & Автоматизация</div>
+      <h2 class="section-title reveal">Работаю с AI как с коллегой</h2>
+
+      <!-- Top statement -->
+      <div class="ai-statement reveal">
+        <div class="ai-statement-icon">🤖</div>
+        <p>Использую AI-инструменты не как поисковик, а как часть рабочего процесса — для ускорения тест-дизайна, анализа кода и автоматизации рутины. Настраиваю MCP-интеграции, оркестраторы и правила, чтобы AI понимал контекст проекта.</p>
+      </div>
+
+      <!-- AI Tools grid -->
+      <div class="ai-grid reveal">
+
+        <div class="ai-card ai-card-featured">
+          <div class="ai-card-glow"></div>
+          <div class="ai-badge">MCP</div>
+          <div class="ai-card-icon">⚡</div>
+          <div class="ai-card-title">Model Context Protocol</div>
+          <div class="ai-card-desc">Подключаю Claude напрямую к рабочим инструментам через MCP-серверы. Например: Claude читает проекты из TMS, анализирует тест-кейсы и помогает с описанием — без copy-paste.</div>
+          <div class="ai-card-examples">
+            <span>TMS → Claude</span>
+            <span>Jira → Claude</span>
+            <span>Filesystem</span>
+            <span>Custom MCP</span>
+          </div>
+        </div>
+
+        <div class="ai-card">
+          <div class="ai-badge">Orchestration</div>
+          <div class="ai-card-icon">🎯</div>
+          <div class="ai-card-title">AI Оркестраторы</div>
+          <div class="ai-card-desc">Claude Code как основной агент для работы с кодом. Cursor и Windsurf для навигации по большим проектам. Настраиваю агентов под конкретные задачи QA.</div>
+          <div class="ai-card-examples">
+            <span>Claude Code</span>
+            <span>Cursor</span>
+            <span>Windsurf</span>
+          </div>
+        </div>
+
+        <div class="ai-card">
+          <div class="ai-badge">Rules & Context</div>
+          <div class="ai-card-icon">📋</div>
+          <div class="ai-card-title">Rules / CLAUDE.md</div>
+          <div class="ai-card-desc">Пишу правила и контекстные файлы для AI — чтобы агент знал стек, соглашения проекта и не предлагал лишнего. Один раз настроил — AI работает как джуниор в команде.</div>
+          <div class="ai-card-examples">
+            <span>.cursorrules</span>
+            <span>CLAUDE.md</span>
+            <span>System prompts</span>
+          </div>
+        </div>
+
+        <div class="ai-card">
+          <div class="ai-badge">Daily Use</div>
+          <div class="ai-card-icon">💬</div>
+          <div class="ai-card-title">AI Ассистенты</div>
+          <div class="ai-card-desc">Claude, ChatGPT, Gemini — для тест-дизайна, анализа логов, объяснения незнакомого кода. GitHub Copilot — для ускорения написания Page Object классов и boilerplate.</div>
+          <div class="ai-card-examples">
+            <span>Claude</span>
+            <span>ChatGPT</span>
+            <span>Gemini</span>
+            <span>GitHub Copilot</span>
+          </div>
+        </div>
+
+        <div class="ai-card">
+          <div class="ai-badge">QA Use Cases</div>
+          <div class="ai-card-icon">🧪</div>
+          <div class="ai-card-title">AI в QA-процессах</div>
+          <div class="ai-card-desc">Генерация тест-кейсов по требованиям, анализ allure-отчётов, поиск паттернов в падениях, ревью автотестов, написание технической документации.</div>
+          <div class="ai-card-examples">
+            <span>Тест-дизайн</span>
+            <span>Анализ логов</span>
+            <span>Code review</span>
+            <span>Документация</span>
+          </div>
+        </div>
+
+        <div class="ai-card ai-card-dark">
+          <div class="ai-card-icon" style="font-size:2rem">🚀</div>
+          <div class="ai-card-title" style="font-size:1rem; color:var(--muted)">Следующий шаг</div>
+          <div class="ai-card-desc" style="margin-top:8px">Изучаю Agent SDK и построение мультиагентных пайплайнов для автоматизации QA-рутины — от анализа требований до создания тест-кейсов в TMS.</div>
+          <div class="ai-card-examples" style="margin-top:16px">
+            <span>Agent SDK</span>
+            <span>Multi-agent</span>
+            <span>Auto test gen</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Experience -->
+  <section id="experience">
+    <div class="container">
+      <div class="section-label">Опыт</div>
+      <h2 class="section-title reveal">Где я работал</h2>
+      <div class="timeline">
+        <div class="tl-item reveal">
+          <div class="tl-date">~ 2024 — сейчас</div>
+          <div class="tl-line"><div class="tl-dot"></div><div class="tl-connector"></div></div>
+          <div class="tl-content">
+            <div class="tl-company">SevenTech · Контакт-Центр</div>
+            <div class="tl-role">Инженер по тестированию ПО</div>
+            <div class="tl-desc">Тестирование enterprise контакт-центра — front и back. Диалоги, маршрутизация, чат-боты, CSAT, аналитика, ролевая модель, шаблоны сообщений, расписания агентов. Каналы: WhatsApp, Telegram, VK, SMS, LiveChat. Более 30 проектов в TMS по этому продукту.</div>
+          </div>
+        </div>
+        <div class="tl-item reveal reveal-delay-1">
+          <div class="tl-date">Авг 2023 — ~ 2024</div>
+          <div class="tl-line"><div class="tl-dot" style="background:rgba(108,99,255,.5)"></div><div class="tl-connector"></div></div>
+          <div class="tl-content">
+            <div class="tl-company" style="color:rgba(108,99,255,.8)">SevenTech · Транспортные адаптеры</div>
+            <div class="tl-role">Инженер по тестированию ПО</div>
+            <div class="tl-desc">Тестирование транспортного слоя платформы CRP: SMPP-протокол, балансировка соединений, обработка статусов, нарезка многосоставных сообщений, бинарные сообщения, Kafka, TTL, retry-логика. Адаптеры: SMS/SMPP, HTTP, WhatsApp, Viber. Приёмочные тесты платформы end-to-end.</div>
+          </div>
+        </div>
+        <div class="tl-item reveal reveal-delay-1">
+          <div class="tl-date">Июн — Авг 2023</div>
+          <div class="tl-line"><div class="tl-dot" style="background:var(--accent2)"></div><div class="tl-connector"></div></div>
+          <div class="tl-content">
+            <div class="tl-company" style="color:var(--accent2)">Инфотек</div>
+            <div class="tl-role">Разметчик данных для нейросетей</div>
+            <div class="tl-desc">Разметка и аннотация данных для обучения ML-моделей. Опыт работы с неструктурированными данными и требованиями к их качеству.</div>
+          </div>
+        </div>
+        <div class="tl-item reveal reveal-delay-2">
+          <div class="tl-date">Янв 2017 — Апр 2023</div>
+          <div class="tl-line"><div class="tl-dot" style="background:var(--accent3)"></div><div class="tl-connector"></div></div>
+          <div class="tl-content">
+            <div class="tl-company" style="color:var(--accent3)">СтанкоРемСервис · Тверь</div>
+            <div class="tl-role">Инженер по наладке и испытаниям</div>
+            <div class="tl-desc">Испытания и приёмка сложного оборудования, ведение технической документации, расследование аварий и разработка мер по их предотвращению. Здесь сформировался системный подход к поиску причин отказов — основа QA-мышления.</div>
+          </div>
+        </div>
+        <div class="tl-item reveal reveal-delay-3">
+          <div class="tl-date">Апр 2007 — Сен 2017</div>
+          <div class="tl-line"><div class="tl-dot" style="background:var(--muted)"></div><div class="tl-connector"></div></div>
+          <div class="tl-content">
+            <div class="tl-company" style="color:var(--muted)">ОАО ТВЗ · Тверь</div>
+            <div class="tl-role">Наладчик · Тестирование систем управления</div>
+            <div class="tl-desc">Тестирование систем контроля и управления сварочных комплексов с программным управлением. Наладка оборудования с микропроцессорным управлением — фактически тестирование embedded-систем на производстве.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How I write tests -->
+  <section id="approach" style="background: var(--surface);">
+    <div class="container">
+      <div class="section-label">Подход</div>
+      <h2 class="section-title reveal">Как я пишу автотесты</h2>
+
+      <!-- Architecture layers -->
+      <div class="reveal" style="margin-bottom: 64px;">
+        <div style="font-size:.8rem; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin-bottom: 20px;">Архитектура фреймворка</div>
+        <div class="arch-layers">
+          <div class="arch-layer" style="--layer-color: #6c63ff;">
+            <div class="arch-layer-icon">🧪</div>
+            <div class="arch-layer-name">Test Layer</div>
+            <div class="arch-layer-desc">JUnit 5 тест-классы с аннотациями @TmsLink, @DisplayName. Логика теста — только бизнес-сценарий, без деталей реализации.</div>
+            <div class="arch-layer-tech">
+              <span>Playwright</span><span>Selenide</span><span>JUnit 5</span>
+            </div>
+          </div>
+          <div class="arch-arrow">↓</div>
+          <div class="arch-layer" style="--layer-color: #ff6584;">
+            <div class="arch-layer-icon">📄</div>
+            <div class="arch-layer-name">Page Object Layer</div>
+            <div class="arch-layer-desc">Страницы инкапсулируют локаторы и действия. Тесты не знают про CSS-селекторы — только про методы типа clickApplyFilter().</div>
+            <div class="arch-layer-tech">
+              <span>Page Object Model</span><span>Локаторы</span><span>Actions</span>
+            </div>
+          </div>
+          <div class="arch-arrow">↓</div>
+          <div class="arch-layer" style="--layer-color: #43e97b;">
+            <div class="arch-layer-icon">🔧</div>
+            <div class="arch-layer-name">Service / Helper Layer</div>
+            <div class="arch-layer-desc">Builders для генерации тестовых данных (MessageBuilder, AgentBuilder). Operations — переиспользуемые действия с ожиданием логов.</div>
+            <div class="arch-layer-tech">
+              <span>Builder Pattern</span><span>DataFaker</span><span>Operations</span>
+            </div>
+          </div>
+          <div class="arch-arrow">↓</div>
+          <div class="arch-layer" style="--layer-color: #ff9f43;">
+            <div class="arch-layer-icon">🌐</div>
+            <div class="arch-layer-name">API / Transport Layer</div>
+            <div class="arch-layer-desc">REST Assured для HTTP, кастомный gRPC-клиент для серверных команд (назначение агента, смена статуса диалога), Kafka для событий.</div>
+            <div class="arch-layer-tech">
+              <span>REST Assured</span><span>gRPC</span><span>Kafka</span><span>WebSocket</span>
+            </div>
+          </div>
+          <div class="arch-arrow">↓</div>
+          <div class="arch-layer" style="--layer-color: #00bcd4;">
+            <div class="arch-layer-icon">🗄️</div>
+            <div class="arch-layer-name">Database Layer</div>
+            <div class="arch-layer-desc">Прямая работа с PostgreSQL через JDBI — получение ID диалогов, валидация данных в БД, обновление дат для временных сценариев.</div>
+            <div class="arch-layer-tech">
+              <span>JDBI</span><span>PostgreSQL</span><span>DataGrip</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Patterns & Principles -->
+      <div style="font-size:.8rem; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin-bottom: 20px;">Паттерны и принципы</div>
+      <div class="patterns-grid reveal">
+        <div class="pattern-card">
+          <div class="pattern-icon">🏗️</div>
+          <div class="pattern-name">Page Object Model</div>
+          <div class="pattern-desc">Каждый экран — отдельный класс. Тест читается как сценарий, не как набор локаторов. Легко поддерживать при изменении UI.</div>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-icon">🔨</div>
+          <div class="pattern-name">Builder Pattern</div>
+          <div class="pattern-desc">Генерация тестовых данных через Builders + DataFaker. Каждый тест получает уникальные данные — нет зависимостей между тестами.</div>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-icon">⏱️</div>
+          <div class="pattern-name">Log Waiter</div>
+          <div class="pattern-desc">Вместо Thread.sleep() — ожидание конкретного события в логах (CUSTOMER, AGENT_ASSIGNED). Тесты стабильны и не падают на флаках.</div>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-icon">🔄</div>
+          <div class="pattern-name">Retry Extension</div>
+          <div class="pattern-desc">Кастомный JUnit 5 extension для автоматического повтора нестабильных тестов. Настраиваемое количество попыток через аннотацию.</div>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-icon">🔗</div>
+          <div class="pattern-name">TMS Integration</div>
+          <div class="pattern-desc">Результаты тестов автоматически отправляются в TMS через @TmsLink. После прогона статусы обновляются без ручного труда.</div>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-icon">🌐</div>
+          <div class="pattern-name">Multi-Protocol</div>
+          <div class="pattern-desc">Один тест может: отправить сообщение через REST, назначить агента через gRPC, проверить статус в Kafka и валидировать данные в БД.</div>
+        </div>
+      </div>
+
+      <!-- Code snippet (generic, no business logic) -->
+      <div class="reveal" style="margin-top: 64px;">
+        <div style="font-size:.8rem; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin-bottom: 20px;">Пример структуры теста</div>
+        <div class="code-window">
+          <div class="code-header">
+            <span class="code-dot" style="background:#ff5f57"></span>
+            <span class="code-dot" style="background:#febc2e"></span>
+            <span class="code-dot" style="background:#28c840"></span>
+            <span class="code-filename">DialogueFilterTest.java</span>
+          </div>
+          <pre class="code-body"><code><span class="c-annotation">@ExtendWith</span>({TmsExtension.class})
+<span class="c-keyword">public class</span> <span class="c-class">DialogueFilterTest</span> <span class="c-keyword">extends</span> <span class="c-class">BaseApiTest</span> {
+
+    <span class="c-annotation">@BeforeEach</span>
+    <span class="c-keyword">void</span> <span class="c-method">prepare</span>() {
+        dialogues.allDialoguesPage.<span class="c-method">clickAllDialogues</span>();
+        dialogues.dialogueFilterPage.<span class="c-method">clickCloseFilterIfExists</span>();
+    }
+
+    <span class="c-annotation">@Test</span>
+    <span class="c-annotation">@TmsLink</span>(<span class="c-string">"7034"</span>)
+    <span class="c-annotation">@DisplayName</span>(<span class="c-string">"Применить фильтр по каналу WhatsApp"</span>)
+    <span class="c-keyword">void</span> <span class="c-method">checkChannelFilter</span>() {
+        <span class="c-comment">// 1. Подготовить данные — отправить сообщение через API</span>
+        <span class="c-keyword">var</span> message = builder.message.<span class="c-method">getRandomSendMessageDTO</span>();
+        operations.log().<span class="c-method">actionAndWaitForLog</span>(
+            () -> messageService.<span class="c-method">sendMessage</span>(message),
+            LogTypeList.CUSTOMER.<span class="c-method">toString</span>()
+        );
+
+        <span class="c-comment">// 2. Применить фильтр на UI</span>
+        dialogues.dialogueFilterPage.<span class="c-method">clickDialoguesFilter</span>();
+        dialogues.dialogueFilterPage.<span class="c-method">selectChannelsDropdown</span>();
+        dialogues.dialogueFilterPage.<span class="c-method">selectChannelWhatsApp</span>();
+        dialogues.dialogueFilterPage.<span class="c-method">clickApplyFilter</span>();
+
+        <span class="c-comment">// 3. Проверить результат</span>
+        <span class="c-method">assertThat</span>(dialogues.allDialoguesPage
+            .<span class="c-method">isExistsInFirstRowByProfile</span>(message.<span class="c-method">getProfileName</span>()))
+            .<span class="c-method">isVisible</span>();
+    }
+}</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects — Bento Grid -->
+  <section id="projects">
+    <div class="container">
+      <div class="section-label">Проекты</div>
+      <h2 class="section-title reveal">Избранные работы</h2>
+      <div class="bento reveal">
+
+        <div class="bento-card col-4 featured">
+          <div class="card-arrow">→</div>
+          <div class="card-icon">💬</div>
+          <div class="card-tag tag-purple">SevenTech · 498 Java-файлов</div>
+          <div class="card-title">Контакт-Центр — автотесты (Playwright)</div>
+          <div class="card-desc">UI + API + gRPC + Kafka + DB автотесты enterprise контакт-центра. Покрытие: диалоги, маршрутизация, чат-боты, CSAT, аналитика, агенты, расписания, шаблоны. Каналы: WhatsApp, Telegram, VK, SMS, LiveChat. Интеграция с внутренним TMS.</div>
+          <div class="card-tech">
+            <span class="tech-badge">Playwright</span>
+            <span class="tech-badge">JUnit 5</span>
+            <span class="tech-badge">Spring Boot 3</span>
+            <span class="tech-badge">gRPC</span>
+            <span class="tech-badge">Kafka</span>
+            <span class="tech-badge">JDBI + PostgreSQL</span>
+            <span class="tech-badge">Allure</span>
+            <span class="tech-badge">Moon CI</span>
+          </div>
+        </div>
+
+        <div class="bento-card col-2">
+          <div class="card-icon">🏢</div>
+          <div class="card-tag tag-pink">Мегафон · 601 Java-файл</div>
+          <div class="card-title">Admin Panel (Selenide)</div>
+          <div class="card-desc">Автотесты административной панели МФ: клиенты, пользователи, пагинация, сортировка, права доступа. Selenide + TestIt + Allure.</div>
+          <div class="card-tech">
+            <span class="tech-badge">Selenide</span>
+            <span class="tech-badge">TestIt</span>
+            <span class="tech-badge">Allure</span>
+            <span class="tech-badge">JUnit 5</span>
+          </div>
+        </div>
+
+        <div class="bento-card col-3">
+          <div class="card-arrow">→</div>
+          <div class="card-icon">📡</div>
+          <div class="card-tag tag-pink">Telecom · SMPP + Kafka</div>
+          <div class="card-title">Транспортные адаптеры CRP</div>
+          <div class="card-desc">Тестирование транспортного слоя: SMPP-протокол, балансировка соединений, бинарные сообщения, нарезка кириллицы/латиницы, Kafka, TTL, retry. Адаптеры: SMS, HTTP, WhatsApp, Viber. Приёмочные тесты e2e.</div>
+          <div class="card-tech">
+            <span class="tech-badge">SMPP</span>
+            <span class="tech-badge">Kafka</span>
+            <span class="tech-badge">WhatsApp API</span>
+            <span class="tech-badge">Viber API</span>
+            <span class="tech-badge">SQL</span>
+          </div>
+        </div>
+
+        <div class="bento-card col-3">
+          <div class="card-icon">⚡</div>
+          <div class="card-tag tag-green">JMeter · Нагрузка</div>
+          <div class="card-title">Load Testing: API Users Service</div>
+          <div class="card-desc">JMeter-сценарии для нагрузочного тестирования API: создание и обновление пользователей под нагрузкой. Проверка стабильности, времени отклика, деградации при пиковых запросах.</div>
+          <div class="card-tech">
+            <span class="tech-badge">JMeter</span>
+            <span class="tech-badge">Thread Groups</span>
+            <span class="tech-badge">CSV Data Set</span>
+            <span class="tech-badge">Assertions</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <div class="container">
+      <div class="contact-box reveal">
+        <div class="section-label" style="text-align:center; display:block;">Контакты</div>
+        <div class="contact-title">Открыт к предложениям</div>
+        <p class="contact-sub">Ищу full-time позицию QA Engineer / Automation Engineer. Удалённо или офис в Твери. Готов к редким командировкам.</p>
+        <a href="mailto:i@dhollow.ru" class="btn-primary" style="margin-bottom: 32px; display:inline-flex;">
+          i@dhollow.ru ✉️
+        </a>
+        <div class="social-links">
+          <a href="https://github.com/Delakroa" target="_blank" class="social-link">⬡ github.com/Delakroa</a>
+          <a href="https://t.me/delakroa" target="_blank" class="social-link">✈ @delakroa</a>
+          <a href="tel:+79201570416" class="social-link">📞 +7 (920) 157-04-16</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p style="margin-bottom:6px">© 2026 Дмитрий Халиков — QA Engineer, который тестирует всё. Даже этот сайт.</p>
+      <p style="font-size:.75rem; color:#444">Тверь · i@dhollow.ru · github.com/Delakroa</p>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const observer = new IntersectionObserver(
+      (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+    );
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Magnetic buttons
+    document.querySelectorAll('.btn-primary, .btn-outline').forEach(btn => {
+      btn.addEventListener('mousemove', e => {
+        const r = btn.getBoundingClientRect();
+        const x = e.clientX - r.left - r.width / 2;
+        const y = e.clientY - r.top - r.height / 2;
+        btn.style.transform = `translate(${x * .15}px, ${y * .25}px) translateY(-2px)`;
+      });
+      btn.addEventListener('mouseleave', () => btn.style.transform = '');
+    });
+
+    // Parallax hero text on mouse move
+    const hero = document.querySelector('.hero-inner');
+    document.addEventListener('mousemove', e => {
+      const x = (e.clientX / window.innerWidth - .5) * 12;
+      const y = (e.clientY / window.innerHeight - .5) * 8;
+      hero.style.transform = `translate(${x}px, ${y}px)`;
+    });
+  </script>
+</body>
+</html>
