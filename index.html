@@ -86,7 +86,36 @@
       min-height: 100vh; display: flex; align-items: center;
       padding-top: var(--nav-h);
     }
-    .hero-inner { display: flex; flex-direction: column; gap: 24px; max-width: 680px; }
+    .hero-inner {
+      display: flex; flex-direction: row;
+      align-items: center; justify-content: space-between;
+      gap: 60px; max-width: 100%;
+    }
+    .hero-left { display: flex; flex-direction: column; gap: 24px; max-width: 560px; }
+
+    /* ── Hero Avatar ──────────────────────────────────────────── */
+    .hero-avatar-wrap {
+      flex-shrink: 0; position: relative;
+      width: 300px; height: 300px;
+    }
+    .hero-avatar-wrap::before {
+      content: ''; position: absolute; inset: -3px;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, var(--accent1), var(--accent2), #ff9f43, var(--accent3), var(--accent1));
+      animation: avatarSpin 6s linear infinite;
+      z-index: 0;
+    }
+    @keyframes avatarSpin { to { transform: rotate(360deg); } }
+    .hero-avatar {
+      position: absolute; inset: 4px;
+      border-radius: 50%; overflow: hidden;
+      z-index: 1; background: var(--surface);
+    }
+    .hero-avatar img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center top;
+      display: block;
+    }
 
     .hero-badge {
       display: inline-flex; align-items: center; gap: 8px;
@@ -149,6 +178,37 @@
     .section-title {
       font-size: clamp(1.8rem, 3.5vw, 2.8rem);
       font-weight: 800; letter-spacing: -1px; margin-bottom: 48px;
+    }
+
+    /* ── Moments (photo grid) ────────────────────────────────── */
+    .moments-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 20px; margin-top: 40px;
+    }
+    .moment-card {
+      position: relative; border-radius: var(--radius);
+      overflow: hidden; border: 1px solid var(--border);
+      transition: border-color .3s, transform .3s;
+    }
+    .moment-card:hover { border-color: rgba(108,99,255,.5); transform: translateY(-4px); }
+    .moment-card img {
+      width: 100%; height: 240px;
+      object-fit: cover; object-position: center top; display: block;
+      transition: transform .4s;
+    }
+    .moment-card:hover img { transform: scale(1.04); }
+    .moment-caption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 14px 18px;
+      background: linear-gradient(transparent, rgba(10,10,14,.92));
+    }
+    .moment-caption strong { display: block; color: #fff; font-weight: 600; font-size: .9rem; }
+    .moment-caption span { color: rgba(255,255,255,.6); font-size: .78rem; }
+    .moment-badge {
+      display: inline-block; margin-bottom: 6px;
+      padding: 2px 10px; border-radius: 100px;
+      background: rgba(108,99,255,.7); color: #fff;
+      font-size: .72rem; font-weight: 600; letter-spacing: .5px;
     }
 
     /* ── About ────────────────────────────────────────────────── */
@@ -445,7 +505,10 @@
 
     /* ── Responsive ───────────────────────────────────────────── */
     @media (max-width: 768px) {
+      .hero-inner { flex-direction: column-reverse; gap: 32px; }
+      .hero-avatar-wrap { width: 200px; height: 200px; }
       #about .about-grid { grid-template-columns: 1fr; }
+      .moments-grid { grid-template-columns: 1fr; }
       .bento-card.col-4, .bento-card.col-2, .bento-card.col-3 { grid-column: span 6; }
       .tl-date { display: none; }
       .tl-item { grid-template-columns: 1px 1fr; }
@@ -478,22 +541,29 @@
   <section id="hero">
     <div class="container" style="position:relative;">
       <div class="hero-inner">
-        <div class="hero-badge">
-          <span></span>
-          Открыт к предложениям
+        <div class="hero-left">
+          <div class="hero-badge">
+            <span></span>
+            Открыт к предложениям
+          </div>
+          <h1 class="hero-title">
+            Дмитрий<br>
+            <span class="highlight">Халиков</span>
+          </h1>
+          <p class="hero-sub">
+            QA Engineer · Test Automation · Java &amp; Python<br>
+            Нахожу баги глубже пользовательского уровня — понимаю системы
+            изнутри, потому что сам их строил и испытывал.
+          </p>
+          <div class="hero-cta">
+            <a href="#projects" class="btn-primary">Посмотреть проекты →</a>
+            <a href="#contact" class="btn-outline">Связаться</a>
+          </div>
         </div>
-        <h1 class="hero-title">
-          Дмитрий<br>
-          <span class="highlight">Халиков</span>
-        </h1>
-        <p class="hero-sub">
-          QA Engineer · Test Automation · Java &amp; Python<br>
-          Нахожу баги глубже пользовательского уровня — понимаю системы
-          изнутри, потому что сам их строил и испытывал.
-        </p>
-        <div class="hero-cta">
-          <a href="#projects" class="btn-primary">Посмотреть проекты →</a>
-          <a href="#contact" class="btn-outline">Связаться</a>
+        <div class="hero-avatar-wrap">
+          <div class="hero-avatar">
+            <img src="photo-solo.jpg" alt="Дмитрий Халиков — QA Engineer" />
+          </div>
         </div>
       </div>
 
@@ -541,6 +611,26 @@
           <div class="stat-card">
             <div class="stat-num">Тверь</div>
             <div class="stat-label">Удалённо / офис</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Photo moments -->
+      <div class="moments-grid reveal reveal-delay-1">
+        <div class="moment-card">
+          <img src="photo-drobyshevsky.jpg" alt="MTS True Tech Day" />
+          <div class="moment-caption">
+            <div class="moment-badge">MTS True Tech Day</div>
+            <strong>С Дробышевским на IT-конференции МТС</strong>
+            <span>Слежу за трендами индустрии, хожу на конференции</span>
+          </div>
+        </div>
+        <div class="moment-card">
+          <img src="photo-team.jpg" alt="Команда SevenTech" />
+          <div class="moment-caption">
+            <div class="moment-badge">SevenTech</div>
+            <strong>Команда, с которой делаем продукт</strong>
+            <span>Умею работать в команде и ценю командный дух</span>
           </div>
         </div>
       </div>
@@ -1005,7 +1095,7 @@
     });
 
     // Parallax hero text on mouse move
-    const hero = document.querySelector('.hero-inner');
+    const hero = document.querySelector('.hero-left');
     document.addEventListener('mousemove', e => {
       const x = (e.clientX / window.innerWidth - .5) * 12;
       const y = (e.clientY / window.innerHeight - .5) * 8;
