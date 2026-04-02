@@ -930,50 +930,6 @@
         </div>
       </div>
 
-      <!-- Code snippet (generic, no business logic) -->
-      <div class="reveal" style="margin-top: 64px;">
-        <div style="font-size:.8rem; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin-bottom: 20px;">Пример структуры теста</div>
-        <div class="code-window">
-          <div class="code-header">
-            <span class="code-dot" style="background:#ff5f57"></span>
-            <span class="code-dot" style="background:#febc2e"></span>
-            <span class="code-dot" style="background:#28c840"></span>
-            <span class="code-filename">DialogueFilterTest.java</span>
-          </div>
-          <pre class="code-body"><code><span class="c-annotation">@ExtendWith</span>({TmsExtension.class})
-<span class="c-keyword">public class</span> <span class="c-class">DialogueFilterTest</span> <span class="c-keyword">extends</span> <span class="c-class">BaseApiTest</span> {
-
-    <span class="c-annotation">@BeforeEach</span>
-    <span class="c-keyword">void</span> <span class="c-method">prepare</span>() {
-        dialogues.allDialoguesPage.<span class="c-method">clickAllDialogues</span>();
-        dialogues.dialogueFilterPage.<span class="c-method">clickCloseFilterIfExists</span>();
-    }
-
-    <span class="c-annotation">@Test</span>
-    <span class="c-annotation">@TmsLink</span>(<span class="c-string">"7034"</span>)
-    <span class="c-annotation">@DisplayName</span>(<span class="c-string">"Применить фильтр по каналу WhatsApp"</span>)
-    <span class="c-keyword">void</span> <span class="c-method">checkChannelFilter</span>() {
-        <span class="c-comment">// 1. Подготовить данные — отправить сообщение через API</span>
-        <span class="c-keyword">var</span> message = builder.message.<span class="c-method">getRandomSendMessageDTO</span>();
-        operations.log().<span class="c-method">actionAndWaitForLog</span>(
-            () -> messageService.<span class="c-method">sendMessage</span>(message),
-            LogTypeList.CUSTOMER.<span class="c-method">toString</span>()
-        );
-
-        <span class="c-comment">// 2. Применить фильтр на UI</span>
-        dialogues.dialogueFilterPage.<span class="c-method">clickDialoguesFilter</span>();
-        dialogues.dialogueFilterPage.<span class="c-method">selectChannelsDropdown</span>();
-        dialogues.dialogueFilterPage.<span class="c-method">selectChannelWhatsApp</span>();
-        dialogues.dialogueFilterPage.<span class="c-method">clickApplyFilter</span>();
-
-        <span class="c-comment">// 3. Проверить результат</span>
-        <span class="c-method">assertThat</span>(dialogues.allDialoguesPage
-            .<span class="c-method">isExistsInFirstRowByProfile</span>(message.<span class="c-method">getProfileName</span>()))
-            .<span class="c-method">isVisible</span>();
-    }
-}</code></pre>
-        </div>
-      </div>
     </div>
   </section>
 
