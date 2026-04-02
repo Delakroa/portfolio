@@ -195,14 +195,6 @@
     }
     .btn-outline:hover { border-color: var(--accent1); background: rgba(108,99,255,.08); }
 
-    .hero-scroll {
-      position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
-      display: flex; flex-direction: column; align-items: center; gap: 8px;
-      color: var(--muted); font-size: .75rem; letter-spacing: 1px; text-transform: uppercase;
-      animation: bounce 2s ease-in-out infinite;
-    }
-    .hero-scroll svg { width: 20px; height: 20px; stroke: var(--muted); }
-    @keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(6px); } }
 
     /* ── Section base ─────────────────────────────────────────── */
     section { padding: 100px 0; position: relative; z-index: 2; }
@@ -598,12 +590,6 @@
         </div>
       </div>
 
-      <div class="hero-scroll">
-        <span>Скролл</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-          <path d="M12 5v14M5 12l7 7 7-7" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
     </div>
   </section>
 
