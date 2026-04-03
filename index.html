@@ -119,6 +119,21 @@
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
     .nav-links { display: flex; gap: 32px; list-style: none; }
+
+    /* ── Hamburger ─────────────────────────────────────────────── */
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer;
+      padding: 6px; margin-left: 8px; flex-shrink: 0;
+    }
+    .hamburger span {
+      display: block; width: 22px; height: 2px;
+      background: var(--text); border-radius: 2px;
+      transition: transform .3s, opacity .3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
     .lang-btn {
       margin-left: 16px; padding: 5px 14px;
       border-radius: 100px; border: 1px solid rgba(108,99,255,.4);
@@ -132,6 +147,24 @@
       transition: color .2s;
     }
     .nav-links a:hover { color: var(--text); }
+
+    /* ── Scroll-to-top button ─────────────────────────────────── */
+    .scroll-top {
+      position: fixed; bottom: 28px; right: 24px; z-index: 200;
+      width: 44px; height: 44px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      border: none; cursor: pointer; color: #fff; font-size: 1.1rem;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 20px rgba(108,99,255,.4);
+      opacity: 0; transform: translateY(12px) scale(.85);
+      transition: opacity .3s, transform .3s;
+      pointer-events: none;
+    }
+    .scroll-top.visible {
+      opacity: 1; transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+    .scroll-top:hover { transform: translateY(-3px) scale(1.08); box-shadow: 0 8px 28px rgba(108,99,255,.55); }
 
     /* ── Hero ─────────────────────────────────────────────────── */
     #hero {
@@ -266,13 +299,25 @@
     .stat-card {
       background: var(--surface);
       border: 1px solid var(--border); border-radius: var(--radius);
-      padding: 24px; transition: border-color .3s;
+      padding: 24px; transition: border-color .3s, background .3s, transform .2s;
+      cursor: pointer; user-select: none;
     }
-    .stat-card:hover { border-color: rgba(108,99,255,.4); }
+    .stat-card:hover { border-color: rgba(108,99,255,.4); transform: translateY(-2px); }
+    .stat-card.expanded { border-color: rgba(108,99,255,.6); background: rgba(108,99,255,.06); }
     .stat-num { font-size: 2.2rem; font-weight: 800; letter-spacing: -1px;
       background: linear-gradient(135deg, var(--accent1), var(--accent2));
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .stat-label { font-size: .85rem; color: var(--muted); margin-top: 4px; }
+    .stat-detail {
+      display: none; font-size: .8rem; color: var(--muted);
+      margin-top: 12px; padding-top: 12px;
+      border-top: 1px solid var(--border); line-height: 1.5;
+    }
+    .stat-card.expanded .stat-detail { display: block; }
+    .stat-hint {
+      font-size: .65rem; color: var(--border); margin-top: 8px;
+      letter-spacing: .5px; text-transform: uppercase;
+    }
 
     /* ── Skills ───────────────────────────────────────────────── */
     #skills { background: var(--surface); }
@@ -552,7 +597,11 @@
     .c-comment  { color: #546e7a; font-style: italic; }
 
     @media (max-width: 768px) {
-      .arch-layer { grid-template-columns: 32px 1fr; grid-template-rows: auto auto auto; }
+      .arch-layer {
+        grid-template-columns: 32px 1fr;
+        grid-template-rows: auto auto auto;
+      }
+      .arch-layer-desc { grid-column: 1/-1; }
       .arch-layer-tech { justify-content: flex-start; grid-column: 1/-1; }
       .patterns-grid { grid-template-columns: 1fr; }
     }
@@ -569,6 +618,22 @@
 
     /* ── Responsive ───────────────────────────────────────────── */
     @media (max-width: 768px) {
+      /* Nav: hamburger dropdown */
+      .hamburger { display: flex; }
+      .nav-links {
+        display: none;
+        position: fixed; top: var(--nav-h); left: 0; right: 0;
+        flex-direction: column; gap: 0;
+        background: rgba(10,10,15,.97);
+        backdrop-filter: blur(20px) saturate(180%);
+        border-bottom: 1px solid var(--border);
+        padding: 8px 0 16px; z-index: 99;
+      }
+      .nav-links.open { display: flex; }
+      .nav-links li { border-bottom: 1px solid var(--border); }
+      .nav-links a { display: block; padding: 14px 24px; font-size: 1rem; }
+      .lang-btn { margin-left: auto; }
+
       .hero-inner { flex-direction: column-reverse; gap: 32px; }
       .hero-avatar-wrap { width: 200px; height: 200px; }
       #about .about-grid { grid-template-columns: 1fr; }
@@ -577,6 +642,7 @@
       .tl-date { display: none; }
       .tl-item { grid-template-columns: 1px 1fr; }
       #contact .contact-box { padding: 40px 24px; }
+      .stat-hint { display: none; }
     }
   </style>
 </head>
@@ -588,18 +654,21 @@
   <!-- Navigation -->
   <nav>
     <div class="inner">
-      <div class="nav-logo">DH.</div>
-      <ul class="nav-links">
-        <li><a href="#about"     data-ru="О себе"      data-en="About">О себе</a></li>
-        <li><a href="#skills"    data-ru="Навыки"       data-en="Skills">Навыки</a></li>
-        <li><a href="#ai-tools"  data-ru="AI"           data-en="AI">AI</a></li>
-        <li><a href="#experience"data-ru="Опыт"         data-en="Experience">Опыт</a></li>
-        <li><a href="#approach"  data-ru="Подход"       data-en="Approach">Подход</a></li>
-        <li><a href="#projects"  data-ru="Проекты"      data-en="Projects">Проекты</a></li>
-        <li><a href="#education" data-ru="Образование"  data-en="Education">Образование</a></li>
-        <li><a href="#contact"   data-ru="Контакты"     data-en="Contact">Контакты</a></li>
+      <a href="#hero" class="nav-logo" style="text-decoration:none">DH.</a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#about"      data-ru="О себе"      data-en="About"       onclick="closeNav()">О себе</a></li>
+        <li><a href="#skills"     data-ru="Навыки"      data-en="Skills"      onclick="closeNav()">Навыки</a></li>
+        <li><a href="#ai-tools"   data-ru="AI"          data-en="AI"          onclick="closeNav()">AI</a></li>
+        <li><a href="#experience" data-ru="Опыт"        data-en="Experience"  onclick="closeNav()">Опыт</a></li>
+        <li><a href="#approach"   data-ru="Подход"      data-en="Approach"    onclick="closeNav()">Подход</a></li>
+        <li><a href="#projects"   data-ru="Проекты"     data-en="Projects"    onclick="closeNav()">Проекты</a></li>
+        <li><a href="#education"  data-ru="Образование" data-en="Education"   onclick="closeNav()">Образование</a></li>
+        <li><a href="#contact"    data-ru="Контакты"    data-en="Contact"     onclick="closeNav()">Контакты</a></li>
       </ul>
       <button class="lang-btn" id="langBtn" onclick="toggleLang()">EN</button>
+      <button class="hamburger" id="hamburger" onclick="toggleNav()" aria-label="Меню">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
 
@@ -656,21 +725,29 @@
           </div>
         </div>
         <div class="about-stats reveal reveal-delay-2">
-          <div class="stat-card">
+          <div class="stat-card" onclick="this.classList.toggle('expanded')">
             <div class="stat-num">19</div>
             <div class="stat-label" data-i18n="stat-1">Лет общего опыта работы</div>
+            <div class="stat-detail" data-i18n="stat-1-detail">10+ лет в промышленной инженерии — наладка оборудования, испытания, технические проекты. Последние 2+ года — QA Automation в IT.</div>
+            <div class="stat-hint">нажми, чтобы узнать больше</div>
           </div>
-          <div class="stat-card">
+          <div class="stat-card" onclick="this.classList.toggle('expanded')">
             <div class="stat-num">2+</div>
             <div class="stat-label" data-i18n="stat-2">Года в QA Automation</div>
+            <div class="stat-detail" data-i18n="stat-2-detail">Java · Playwright · Selenide · gRPC · Kafka · REST API · JUnit 5 · Allure · PostgreSQL</div>
+            <div class="stat-hint">нажми, чтобы узнать больше</div>
           </div>
-          <div class="stat-card">
+          <div class="stat-card" onclick="this.classList.toggle('expanded')">
             <div class="stat-num">front<br>+ back</div>
             <div class="stat-label" style="margin-top:2px" data-i18n="stat-3">Тестирование на текущем проекте</div>
+            <div class="stat-detail" data-i18n="stat-3-detail">UI-автоматизация (Playwright), REST API, gRPC, Kafka, PostgreSQL — полное покрытие стека.</div>
+            <div class="stat-hint">нажми, чтобы узнать больше</div>
           </div>
-          <div class="stat-card">
+          <div class="stat-card" onclick="this.classList.toggle('expanded')">
             <div class="stat-num">Tver</div>
             <div class="stat-label" data-i18n="stat-4">Удалённо / офис</div>
+            <div class="stat-detail" data-i18n="stat-4-detail">Работаю удалённо. Офис в Твери — по желанию. Готов к редким командировкам.</div>
+            <div class="stat-hint">нажми, чтобы узнать больше</div>
           </div>
         </div>
       </div>
@@ -1142,6 +1219,9 @@
     </div>
   </footer>
 
+  <!-- Scroll-to-top -->
+  <button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Наверх">↑</button>
+
   <script>
     // Scroll reveal
     const observer = new IntersectionObserver(
@@ -1149,6 +1229,12 @@
       { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
     );
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Scroll-to-top visibility
+    const scrollTopBtn = document.getElementById('scrollTop');
+    window.addEventListener('scroll', () => {
+      scrollTopBtn.classList.toggle('visible', window.scrollY > 400);
+    }, { passive: true });
 
     // Magnetic buttons
     document.querySelectorAll('.btn-primary, .btn-outline').forEach(btn => {
@@ -1288,6 +1374,12 @@
       'edu-3-spec':     { ru: 'Программирование ПЛК Siemens', en: 'Siemens PLC Programming' },
       'edu-4-spec':     { ru: 'Регулировщик РЭА и П', en: 'Electronic Equipment Adjuster' },
 
+      // Stat details
+      'stat-1-detail':  { ru: '10+ лет в промышленной инженерии — наладка оборудования, испытания, технические проекты. Последние 2+ года — QA Automation в IT.', en: '10+ years in industrial engineering — equipment setup, testing, technical projects. Last 2+ years in QA Automation in IT.' },
+      'stat-2-detail':  { ru: 'Java · Playwright · Selenide · gRPC · Kafka · REST API · JUnit 5 · Allure · PostgreSQL', en: 'Java · Playwright · Selenide · gRPC · Kafka · REST API · JUnit 5 · Allure · PostgreSQL' },
+      'stat-3-detail':  { ru: 'UI-автоматизация (Playwright), REST API, gRPC, Kafka, PostgreSQL — полное покрытие стека.', en: 'UI automation (Playwright), REST API, gRPC, Kafka, PostgreSQL — full stack coverage.' },
+      'stat-4-detail':  { ru: 'Работаю удалённо. Офис в Твери — по желанию. Готов к редким командировкам.', en: 'Working remotely. Office in Tver — optional. Open to occasional business trips.' },
+
       // Contact
       'contact-label':  { ru: 'Контакты',           en: 'Contact' },
       'contact-title':  { ru: 'Открыт к предложениям', en: 'Open to opportunities' },
@@ -1299,6 +1391,15 @@
     };
 
     let currentLang = 'ru';
+
+    function toggleNav() {
+      document.getElementById('navLinks').classList.toggle('open');
+      document.getElementById('hamburger').classList.toggle('open');
+    }
+    function closeNav() {
+      document.getElementById('navLinks').classList.remove('open');
+      document.getElementById('hamburger').classList.remove('open');
+    }
 
     function toggleLang() {
       currentLang = currentLang === 'ru' ? 'en' : 'ru';
@@ -1329,6 +1430,9 @@
       document.querySelectorAll('.social-lang-en').forEach(el => {
         el.style.display = lang === 'en' ? '' : 'none';
       });
+      // Stat hints
+      const hintText = lang === 'ru' ? 'нажми, чтобы узнать больше' : 'tap for details';
+      document.querySelectorAll('.stat-hint').forEach(el => { el.textContent = hintText; });
     }
   </script>
 </body>
