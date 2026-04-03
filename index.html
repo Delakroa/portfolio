@@ -215,6 +215,66 @@
       .drawer-title { font-size: 1.3rem; }
     }
 
+    /* ── Custom cursor ────────────────────────────────────────── */
+    .cur-dot, .cur-ring {
+      position: fixed; border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: opacity .3s;
+    }
+    .cur-dot {
+      width: 6px; height: 6px;
+      background: var(--accent1);
+    }
+    .cur-ring {
+      width: 32px; height: 32px;
+      border: 1.5px solid rgba(108,99,255,.6);
+      transition: width .2s, height .2s, border-color .2s, transform .12s ease-out;
+    }
+    .cur-ring.hovered {
+      width: 48px; height: 48px;
+      border-color: rgba(108,99,255,1);
+    }
+    @media (hover: none) {
+      .cur-dot, .cur-ring { display: none; }
+    }
+
+    /* ── Typewriter ───────────────────────────────────────────── */
+    .typewriter-wrap { display: inline; }
+    .typewriter-cursor {
+      display: inline-block; width: 2px; height: 1em;
+      background: var(--accent1); margin-left: 2px;
+      vertical-align: middle;
+      animation: blink .7s step-end infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* ── Easter egg ───────────────────────────────────────────── */
+    .egg-overlay {
+      position: fixed; inset: 0; z-index: 9998;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 16px;
+      background: rgba(5,5,10,.92); backdrop-filter: blur(12px);
+      opacity: 0; pointer-events: none;
+      transition: opacity .4s;
+    }
+    .egg-overlay.open { opacity: 1; pointer-events: auto; }
+    .egg-title {
+      font-size: clamp(1.4rem,4vw,2.2rem); font-weight: 900;
+      background: linear-gradient(135deg,var(--accent1),var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      text-align: center;
+    }
+    .egg-sub { color: var(--muted); font-size: .95rem; text-align: center; }
+    .egg-bugs { font-size: 3rem; letter-spacing: 8px; animation: bugShake .5s ease infinite alternate; }
+    @keyframes bugShake { from{transform:rotate(-5deg)} to{transform:rotate(5deg)} }
+    .egg-close {
+      margin-top: 12px; padding: 10px 28px; border-radius: 100px;
+      background: linear-gradient(135deg,var(--accent1),var(--accent2));
+      border: none; color: #fff; font-weight: 700; cursor: pointer;
+      font-size: .95rem;
+    }
+
     /* ── Scroll-to-top button ─────────────────────────────────── */
     .scroll-top {
       position: fixed; bottom: 28px; right: 24px; z-index: 200;
@@ -753,7 +813,7 @@
             <span class="highlight">Халиков</span>
           </h1>
           <p class="hero-sub">
-            QA Engineer · Test Automation · Java &amp; Python<br>
+            <span class="typewriter-wrap" id="typewriterText"></span><span class="typewriter-cursor" id="typewriterCursor"></span><br>
             <span data-i18n="hero-sub">Нахожу баги глубже пользовательского уровня — понимаю системы изнутри, потому что сам их строил и испытывал.</span>
           </p>
           <div class="hero-cta">
@@ -793,13 +853,13 @@
         </div>
         <div class="about-stats reveal reveal-delay-2">
           <div class="stat-card" onclick="this.classList.toggle('expanded')">
-            <div class="stat-num">19</div>
+            <div class="stat-num" data-count="19" data-suffix="">19</div>
             <div class="stat-label" data-i18n="stat-1">Лет общего опыта работы</div>
             <div class="stat-detail" data-i18n="stat-1-detail">10+ лет в промышленной инженерии — наладка оборудования, испытания, технические проекты. Последние 2+ года — QA Automation в IT.</div>
             <div class="stat-hint">нажми, чтобы узнать больше</div>
           </div>
           <div class="stat-card" onclick="this.classList.toggle('expanded')">
-            <div class="stat-num">2+</div>
+            <div class="stat-num" data-count="2" data-suffix="+">2+</div>
             <div class="stat-label" data-i18n="stat-2">Года в QA Automation</div>
             <div class="stat-detail" data-i18n="stat-2-detail">Java · Playwright · Selenide · gRPC · Kafka · REST API · JUnit 5 · Allure · PostgreSQL</div>
             <div class="stat-hint">нажми, чтобы узнать больше</div>
@@ -1286,6 +1346,18 @@
     </div>
   </footer>
 
+  <!-- Custom cursor -->
+  <div class="cur-dot" id="curDot"></div>
+  <div class="cur-ring" id="curRing"></div>
+
+  <!-- Easter egg (Konami code) -->
+  <div class="egg-overlay" id="eggOverlay">
+    <div class="egg-bugs">🐛🐞🦟🪲🐜</div>
+    <div class="egg-title">Все баги найдены!<br>QA Engineer mode: ON</div>
+    <div class="egg-sub">↑↑↓↓←→←→BA — секретный код QA-инженера 🎮</div>
+    <button class="egg-close" onclick="document.getElementById('eggOverlay').classList.remove('open')">Закрыть дебаггер</button>
+  </div>
+
   <!-- Scroll-to-top -->
   <button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Наверх">↑</button>
 
@@ -1568,6 +1640,99 @@
       const hintText = lang === 'ru' ? 'нажми, чтобы узнать больше' : 'tap for details';
       document.querySelectorAll('.stat-hint').forEach(el => { el.textContent = hintText; });
     }
+
+    // ── 1. Animated counters ─────────────────────────────────────
+    function animateCounter(el) {
+      if (el.dataset.animated) return;
+      el.dataset.animated = '1';
+      const target = +el.dataset.count;
+      const suffix = el.dataset.suffix || '';
+      const duration = 1200;
+      const start = performance.now();
+      function tick(now) {
+        const p = Math.min((now - start) / duration, 1);
+        const ease = 1 - Math.pow(1 - p, 3); // ease-out cubic
+        el.textContent = Math.round(ease * target) + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+    const counterObserver = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const el = e.target.querySelector('[data-count]');
+          if (el) animateCounter(el);
+        }
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.stat-card').forEach(c => counterObserver.observe(c));
+
+    // ── 2. Typewriter effect ─────────────────────────────────────
+    const twEl = document.getElementById('typewriterText');
+    const twCursor = document.getElementById('typewriterCursor');
+    const twTextsRu = ['QA Engineer', 'Test Automation', 'Java & Python'];
+    const twTextsEn = ['QA Engineer', 'Test Automation', 'Java & Python'];
+    let twIdx = 0, twChar = 0, twDeleting = false, twTimer;
+    function typewriterTick() {
+      const texts = currentLang === 'en' ? twTextsEn : twTextsRu;
+      const word = texts[twIdx];
+      if (!twDeleting) {
+        twEl.textContent = word.slice(0, ++twChar);
+        if (twChar === word.length) { twDeleting = true; twTimer = setTimeout(typewriterTick, 1800); return; }
+      } else {
+        twEl.textContent = word.slice(0, --twChar);
+        if (twChar === 0) { twDeleting = false; twIdx = (twIdx + 1) % texts.length; }
+      }
+      twTimer = setTimeout(typewriterTick, twDeleting ? 55 : 100);
+    }
+    setTimeout(typewriterTick, 800);
+
+    // ── 3. Custom cursor ─────────────────────────────────────────
+    const curDot = document.getElementById('curDot');
+    const curRing = document.getElementById('curRing');
+    let mx = -100, my = -100, rx = -100, ry = -100;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; }, { passive: true });
+    (function animCursor() {
+      rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18;
+      curDot.style.left  = mx + 'px'; curDot.style.top  = my + 'px';
+      curRing.style.left = rx + 'px'; curRing.style.top = ry + 'px';
+      requestAnimationFrame(animCursor);
+    })();
+    document.querySelectorAll('a, button, .stat-card, .bento-card, .drawer-link').forEach(el => {
+      el.addEventListener('mouseenter', () => curRing.classList.add('hovered'));
+      el.addEventListener('mouseleave', () => curRing.classList.remove('hovered'));
+    });
+    document.addEventListener('mouseleave', () => { curDot.style.opacity = '0'; curRing.style.opacity = '0'; });
+    document.addEventListener('mouseenter', () => { curDot.style.opacity = '1'; curRing.style.opacity = '1'; });
+
+    // ── 4. 3D Tilt on project cards ──────────────────────────────
+    document.querySelectorAll('.bento-card').forEach(card => {
+      card.style.transition = 'transform .15s ease, border-color .3s, box-shadow .15s';
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width  - .5;
+        const y = (e.clientY - r.top)  / r.height - .5;
+        card.style.transform = `perspective(600px) rotateY(${x * 10}deg) rotateX(${-y * 8}deg) translateY(-4px)`;
+        card.style.boxShadow = `${-x*12}px ${-y*12}px 40px rgba(108,99,255,.18)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+        card.style.boxShadow = '';
+      });
+    });
+
+    // ── 5. Konami code Easter egg ─────────────────────────────────
+    const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+    let kIdx = 0;
+    document.addEventListener('keydown', e => {
+      if (e.key === KONAMI[kIdx]) {
+        kIdx++;
+        if (kIdx === KONAMI.length) {
+          kIdx = 0;
+          document.getElementById('eggOverlay').classList.add('open');
+        }
+      } else { kIdx = 0; }
+    });
   </script>
 </body>
 </html>
