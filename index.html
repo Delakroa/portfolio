@@ -119,6 +119,14 @@
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
     .nav-links { display: flex; gap: 32px; list-style: none; }
+    .lang-btn {
+      margin-left: 16px; padding: 5px 14px;
+      border-radius: 100px; border: 1px solid rgba(108,99,255,.4);
+      background: rgba(108,99,255,.1); color: #a89fff;
+      font-size: .8rem; font-weight: 700; letter-spacing: 1px;
+      cursor: pointer; transition: background .2s, border-color .2s;
+    }
+    .lang-btn:hover { background: rgba(108,99,255,.25); border-color: rgba(108,99,255,.7); }
     .nav-links a {
       color: var(--muted); text-decoration: none; font-size: .9rem;
       transition: color .2s;
@@ -582,15 +590,16 @@
     <div class="inner">
       <div class="nav-logo">DH.</div>
       <ul class="nav-links">
-        <li><a href="#about">О себе</a></li>
-        <li><a href="#skills">Навыки</a></li>
-        <li><a href="#ai-tools">AI</a></li>
-        <li><a href="#experience">Опыт</a></li>
-        <li><a href="#approach">Подход</a></li>
-        <li><a href="#projects">Проекты</a></li>
-        <li><a href="#education">Образование</a></li>
-        <li><a href="#contact">Контакты</a></li>
+        <li><a href="#about"     data-ru="О себе"      data-en="About">О себе</a></li>
+        <li><a href="#skills"    data-ru="Навыки"       data-en="Skills">Навыки</a></li>
+        <li><a href="#ai-tools"  data-ru="AI"           data-en="AI">AI</a></li>
+        <li><a href="#experience"data-ru="Опыт"         data-en="Experience">Опыт</a></li>
+        <li><a href="#approach"  data-ru="Подход"       data-en="Approach">Подход</a></li>
+        <li><a href="#projects"  data-ru="Проекты"      data-en="Projects">Проекты</a></li>
+        <li><a href="#education" data-ru="Образование"  data-en="Education">Образование</a></li>
+        <li><a href="#contact"   data-ru="Контакты"     data-en="Contact">Контакты</a></li>
       </ul>
+      <button class="lang-btn" id="langBtn" onclick="toggleLang()">EN</button>
     </div>
   </nav>
 
@@ -601,7 +610,7 @@
         <div class="hero-left">
           <div class="hero-badge">
             <span></span>
-            Открыт к предложениям
+            <span data-i18n="hero-badge">Открыт к предложениям</span>
           </div>
           <h1 class="hero-title">
             Дмитрий<br>
@@ -609,15 +618,12 @@
           </h1>
           <p class="hero-sub">
             QA Engineer · Test Automation · Java &amp; Python<br>
-            Нахожу баги глубже пользовательского уровня — понимаю системы
-            изнутри, потому что сам их строил и испытывал.
+            <span data-i18n="hero-sub">Нахожу баги глубже пользовательского уровня — понимаю системы изнутри, потому что сам их строил и испытывал.</span>
           </p>
           <div class="hero-cta">
-            <a href="#projects" class="btn-primary">Посмотреть проекты →</a>
-            <a href="#contact" class="btn-outline">Связаться</a>
-            <a href="resume.pdf" download="Khalikov_Dmitrij_QA_Engineer.pdf" class="btn-outline" title="Скачать резюме PDF">
-              ⬇ Резюме PDF
-            </a>
+            <a href="#projects" class="btn-primary" data-i18n="hero-btn-projects">Посмотреть проекты →</a>
+            <a href="#contact" class="btn-outline" data-i18n="hero-btn-contact">Связаться</a>
+            <a href="resume.pdf" download="Khalikov_Dmitrij_QA_Engineer.pdf" class="btn-outline" title="Скачать резюме PDF" data-i18n="hero-btn-pdf">⬇ Резюме PDF</a>
           </div>
         </div>
         <div class="hero-avatar-wrap">
@@ -633,13 +639,13 @@
   <!-- About -->
   <section id="about">
     <div class="container">
-      <div class="section-label">О себе</div>
+      <div class="section-label" data-i18n="about-label">О себе</div>
       <div class="about-grid">
         <div class="about-text reveal">
-          <h2 class="section-title">Привет, я Дмитрий</h2>
-          <p>QA Engineer с <strong>аналитическим мышлением</strong> и нестандартным путём в профессию. До IT — 10+ лет в промышленной инженерии: наладка сложных систем, испытания оборудования, техническая документация.</p>
-          <p>Этот бэкграунд даёт мне суперсилу в тестировании: я понимаю поведение системы <strong>глубже пользовательского уровня</strong> — на уровне логики, архитектуры и краевых состояний.</p>
-          <p>Сейчас в <strong>SevenTech</strong> тестирую front + back сложных интеграционных решений. Умею находить неочевидные баги и ценю предсказуемость и прозрачность процессов.</p>
+          <h2 class="section-title" data-i18n="about-title">Привет, я Дмитрий</h2>
+          <p data-i18n="about-p1">QA Engineer с <strong>аналитическим мышлением</strong> и нестандартным путём в профессию. До IT — 10+ лет в промышленной инженерии: наладка сложных систем, испытания оборудования, техническая документация.</p>
+          <p data-i18n="about-p2">Этот бэкграунд даёт мне суперсилу в тестировании: я понимаю поведение системы <strong>глубже пользовательского уровня</strong> — на уровне логики, архитектуры и краевых состояний.</p>
+          <p data-i18n="about-p3">Сейчас в <strong>SevenTech</strong> тестирую front + back сложных интеграционных решений. Умею находить неочевидные баги и ценю предсказуемость и прозрачность процессов.</p>
           <div style="margin-top: 28px; display:flex; gap:12px; flex-wrap:wrap;">
             <a href="mailto:i@dhollow.ru" class="btn-outline" style="font-size:.85rem; padding: 10px 20px;">
               ✉️ i@dhollow.ru
@@ -652,19 +658,19 @@
         <div class="about-stats reveal reveal-delay-2">
           <div class="stat-card">
             <div class="stat-num">19</div>
-            <div class="stat-label">Лет общего опыта работы</div>
+            <div class="stat-label" data-i18n="stat-1">Лет общего опыта работы</div>
           </div>
           <div class="stat-card">
             <div class="stat-num">2+</div>
-            <div class="stat-label">Года в QA Automation</div>
+            <div class="stat-label" data-i18n="stat-2">Года в QA Automation</div>
           </div>
           <div class="stat-card">
             <div class="stat-num">front<br>+ back</div>
-            <div class="stat-label" style="margin-top:2px">Тестирование на текущем проекте</div>
+            <div class="stat-label" style="margin-top:2px" data-i18n="stat-3">Тестирование на текущем проекте</div>
           </div>
           <div class="stat-card">
-            <div class="stat-num">Тверь</div>
-            <div class="stat-label">Удалённо / офис</div>
+            <div class="stat-num">Tver</div>
+            <div class="stat-label" data-i18n="stat-4">Удалённо / офис</div>
           </div>
         </div>
       </div>
@@ -675,16 +681,16 @@
           <img src="photo-drobyshevsky.jpg" alt="MTS True Tech Day" loading="lazy" />
           <div class="moment-caption">
             <div class="moment-badge">MTS True Tech Day</div>
-            <strong>С Дробышевским на IT-конференции МТС</strong>
-            <span>Слежу за трендами индустрии, хожу на конференции</span>
+            <strong data-i18n="moment-1-title">С Дробышевским на IT-конференции МТС</strong>
+            <span data-i18n="moment-1-sub">Слежу за трендами индустрии, хожу на конференции</span>
           </div>
         </div>
         <div class="moment-card">
           <img src="photo-team.jpg" alt="Команда SevenTech" loading="lazy" />
           <div class="moment-caption">
             <div class="moment-badge">SevenTech</div>
-            <strong>Команда, с которой делаем продукт</strong>
-            <span>Умею работать в команде и ценю командный дух</span>
+            <strong data-i18n="moment-2-title">Команда, с которой делаем продукт</strong>
+            <span data-i18n="moment-2-sub">Умею работать в команде и ценю командный дух</span>
           </div>
         </div>
       </div>
@@ -694,10 +700,10 @@
   <!-- Skills -->
   <section id="skills">
     <div class="container">
-      <div class="section-label">Навыки</div>
-      <h2 class="section-title reveal">Инструменты качества</h2>
+      <div class="section-label" data-i18n="skills-label">Навыки</div>
+      <h2 class="section-title reveal" data-i18n="skills-title">Инструменты качества</h2>
       <div style="margin-bottom: 24px;">
-        <div style="font-size:.8rem; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin-bottom: 12px;">Языки & Фреймворки</div>
+        <div style="font-size:.8rem; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin-bottom: 12px;" data-i18n="skills-cat-1">Языки & Фреймворки</div>
         <div class="skills-grid reveal">
           <div class="skill-chip"><span class="dot" style="background:#f89820"></span> Java 21</div>
           <div class="skill-chip"><span class="dot" style="background:#3572A5"></span> Python</div>
@@ -708,7 +714,7 @@
         </div>
       </div>
       <div style="margin-bottom: 24px;">
-        <div style="font-size:.8rem; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin-bottom: 12px;">UI & API Automation</div>
+        <div style="font-size:.8rem; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin-bottom: 12px;" data-i18n="skills-cat-2">UI & API Automation</div>
         <div class="skills-grid reveal reveal-delay-1">
           <div class="skill-chip"><span class="dot" style="background:#2d9b27"></span> Playwright</div>
           <div class="skill-chip"><span class="dot" style="background:#25a244"></span> Selenide</div>
@@ -721,7 +727,7 @@
         </div>
       </div>
       <div style="margin-bottom: 24px;">
-        <div style="font-size:.8rem; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin-bottom: 12px;">Отчётность & Инфраструктура</div>
+        <div style="font-size:.8rem; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin-bottom: 12px;" data-i18n="skills-cat-3">Отчётность & Инфраструктура</div>
         <div class="skills-grid reveal reveal-delay-2">
           <div class="skill-chip"><span class="dot" style="background:#85ea2d"></span> Allure Report</div>
           <div class="skill-chip"><span class="dot" style="background:#336791"></span> PostgreSQL / JDBI</div>
@@ -733,7 +739,7 @@
         </div>
       </div>
       <div>
-        <div style="font-size:.8rem; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin-bottom: 12px;">Процессы & Инструменты</div>
+        <div style="font-size:.8rem; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin-bottom: 12px;" data-i18n="skills-cat-4">Процессы & Инструменты</div>
         <div class="skills-grid reveal reveal-delay-3">
           <div class="skill-chip"><span class="dot" style="background:#0052cc"></span> Jira</div>
           <div class="skill-chip"><span class="dot" style="background:#6c63ff"></span> TMS (кастомный)</div>
@@ -748,13 +754,12 @@
   <!-- AI Tools -->
   <section id="ai-tools">
     <div class="container">
-      <div class="section-label">AI & Автоматизация</div>
-      <h2 class="section-title reveal">Работаю с AI как с коллегой</h2>
+      <div class="section-label" data-i18n="ai-label">AI & Автоматизация</div>
+      <h2 class="section-title reveal" data-i18n="ai-title">Работаю с AI как с коллегой</h2>
 
-      <!-- Top statement -->
       <div class="ai-statement reveal">
         <div class="ai-statement-icon">🤖</div>
-        <p>Использую AI-инструменты не как поисковик, а как часть рабочего процесса — для ускорения тест-дизайна, анализа кода и автоматизации рутины. Настраиваю MCP-интеграции, оркестраторы и правила, чтобы AI понимал контекст проекта.</p>
+        <p data-i18n="ai-statement">Использую AI-инструменты не как поисковик, а как часть рабочего процесса — для ускорения тест-дизайна, анализа кода и автоматизации рутины. Настраиваю MCP-интеграции, оркестраторы и правила, чтобы AI понимал контекст проекта.</p>
       </div>
 
       <!-- AI Tools grid -->
@@ -765,7 +770,7 @@
           <div class="ai-badge">MCP</div>
           <div class="ai-card-icon">⚡</div>
           <div class="ai-card-title">Model Context Protocol</div>
-          <div class="ai-card-desc">Подключаю Claude напрямую к рабочим инструментам через MCP-серверы. Например: Claude читает проекты из TMS, анализирует тест-кейсы и помогает с описанием — без copy-paste.</div>
+          <div class="ai-card-desc" data-i18n="ai-mcp-desc">Подключаю Claude напрямую к рабочим инструментам через MCP-серверы. Например: Claude читает проекты из TMS, анализирует тест-кейсы и помогает с описанием — без copy-paste.</div>
           <div class="ai-card-examples">
             <span>TMS → Claude</span>
             <span>Jira → Claude</span>
@@ -777,8 +782,8 @@
         <div class="ai-card">
           <div class="ai-badge">Orchestration</div>
           <div class="ai-card-icon">🎯</div>
-          <div class="ai-card-title">AI Оркестраторы</div>
-          <div class="ai-card-desc">Claude Code как основной агент для работы с кодом. Cursor и Windsurf для навигации по большим проектам. Настраиваю агентов под конкретные задачи QA.</div>
+          <div class="ai-card-title" data-i18n="ai-orch-title">AI Оркестраторы</div>
+          <div class="ai-card-desc" data-i18n="ai-orch-desc">Claude Code как основной агент для работы с кодом. Cursor и Windsurf для навигации по большим проектам. Настраиваю агентов под конкретные задачи QA.</div>
           <div class="ai-card-examples">
             <span>Claude Code</span>
             <span>Cursor</span>
@@ -790,7 +795,7 @@
           <div class="ai-badge">Rules & Context</div>
           <div class="ai-card-icon">📋</div>
           <div class="ai-card-title">Rules / CLAUDE.md</div>
-          <div class="ai-card-desc">Пишу правила и контекстные файлы для AI — чтобы агент знал стек, соглашения проекта и не предлагал лишнего. Один раз настроил — AI работает как джуниор в команде.</div>
+          <div class="ai-card-desc" data-i18n="ai-rules-desc">Пишу правила и контекстные файлы для AI — чтобы агент знал стек, соглашения проекта и не предлагал лишнего. Один раз настроил — AI работает как джуниор в команде.</div>
           <div class="ai-card-examples">
             <span>.cursorrules</span>
             <span>CLAUDE.md</span>
@@ -801,8 +806,8 @@
         <div class="ai-card">
           <div class="ai-badge">Daily Use</div>
           <div class="ai-card-icon">💬</div>
-          <div class="ai-card-title">AI Ассистенты</div>
-          <div class="ai-card-desc">Claude, ChatGPT, Gemini — для тест-дизайна, анализа логов, объяснения незнакомого кода. GitHub Copilot — для ускорения написания Page Object классов и boilerplate.</div>
+          <div class="ai-card-title" data-i18n="ai-assist-title">AI Ассистенты</div>
+          <div class="ai-card-desc" data-i18n="ai-assist-desc">Claude, ChatGPT, Gemini — для тест-дизайна, анализа логов, объяснения незнакомого кода. GitHub Copilot — для ускорения написания Page Object классов и boilerplate.</div>
           <div class="ai-card-examples">
             <span>Claude</span>
             <span>ChatGPT</span>
@@ -814,13 +819,13 @@
         <div class="ai-card">
           <div class="ai-badge">QA Use Cases</div>
           <div class="ai-card-icon">🧪</div>
-          <div class="ai-card-title">AI в QA-процессах</div>
-          <div class="ai-card-desc">Генерация тест-кейсов по требованиям, анализ allure-отчётов, поиск паттернов в падениях, ревью автотестов, написание технической документации.</div>
+          <div class="ai-card-title" data-i18n="ai-qa-title">AI в QA-процессах</div>
+          <div class="ai-card-desc" data-i18n="ai-qa-desc">Генерация тест-кейсов по требованиям, анализ allure-отчётов, поиск паттернов в падениях, ревью автотестов, написание технической документации.</div>
           <div class="ai-card-examples">
-            <span>Тест-дизайн</span>
-            <span>Анализ логов</span>
+            <span data-i18n="ai-qa-ex-1">Тест-дизайн</span>
+            <span data-i18n="ai-qa-ex-2">Анализ логов</span>
             <span>Code review</span>
-            <span>Документация</span>
+            <span data-i18n="ai-qa-ex-4">Документация</span>
           </div>
         </div>
 
@@ -828,9 +833,9 @@
           <div style="display:flex; align-items:center; gap:20px; flex-wrap:wrap;">
             <div style="font-size:2.5rem; flex-shrink:0;">🚀</div>
             <div style="flex:1; min-width:220px;">
-              <div class="ai-badge" style="margin-bottom:8px;">Следующий шаг</div>
-              <div class="ai-card-title" style="font-size:1.1rem; margin-bottom:6px;">Мультиагентные пайплайны для QA</div>
-              <div class="ai-card-desc" style="margin-bottom:0;">Изучаю Agent SDK и построение мультиагентных пайплайнов для автоматизации QA-рутины — от анализа требований до создания тест-кейсов в TMS.</div>
+              <div class="ai-badge" style="margin-bottom:8px;" data-i18n="ai-next-badge">Следующий шаг</div>
+              <div class="ai-card-title" style="font-size:1.1rem; margin-bottom:6px;" data-i18n="ai-next-title">Мультиагентные пайплайны для QA</div>
+              <div class="ai-card-desc" style="margin-bottom:0;" data-i18n="ai-next-desc">Изучаю Agent SDK и построение мультиагентных пайплайнов для автоматизации QA-рутины — от анализа требований до создания тест-кейсов в TMS.</div>
             </div>
             <div class="ai-card-examples" style="justify-content:flex-end; flex-shrink:0;">
               <span>Agent SDK</span>
@@ -847,52 +852,52 @@
   <!-- Experience -->
   <section id="experience">
     <div class="container">
-      <div class="section-label">Опыт</div>
-      <h2 class="section-title reveal">Где я работал</h2>
+      <div class="section-label" data-i18n="exp-label">Опыт</div>
+      <h2 class="section-title reveal" data-i18n="exp-title">Где я работал</h2>
       <div class="timeline">
         <div class="tl-item reveal">
-          <div class="tl-date">~ 2024 — сейчас</div>
+          <div class="tl-date" data-i18n="exp-1-date">~ 2024 — сейчас</div>
           <div class="tl-line"><div class="tl-dot"></div><div class="tl-connector"></div></div>
           <div class="tl-content">
             <div class="tl-company">SevenTech · Контакт-Центр</div>
-            <div class="tl-role">Инженер по тестированию ПО</div>
-            <div class="tl-desc">Тестирование enterprise контакт-центра — front и back. Диалоги, маршрутизация, чат-боты, CSAT, аналитика, ролевая модель, шаблоны сообщений, расписания агентов. Каналы: WhatsApp, Telegram, VK, SMS, LiveChat. Более 30 проектов в TMS по этому продукту.</div>
+            <div class="tl-role" data-i18n="exp-1-role">Инженер по тестированию ПО</div>
+            <div class="tl-desc" data-i18n="exp-1-desc">Тестирование enterprise контакт-центра — front и back. Диалоги, маршрутизация, чат-боты, CSAT, аналитика, ролевая модель, шаблоны сообщений, расписания агентов. Каналы: WhatsApp, Telegram, VK, SMS, LiveChat. Более 30 проектов в TMS по этому продукту.</div>
           </div>
         </div>
         <div class="tl-item reveal reveal-delay-1">
-          <div class="tl-date">Авг 2023 — ~ 2024</div>
+          <div class="tl-date" data-i18n="exp-2-date">Авг 2023 — ~ 2024</div>
           <div class="tl-line"><div class="tl-dot" style="background:rgba(108,99,255,.5)"></div><div class="tl-connector"></div></div>
           <div class="tl-content">
-            <div class="tl-company" style="color:rgba(108,99,255,.8)">SevenTech · Транспортные адаптеры</div>
-            <div class="tl-role">Инженер по тестированию ПО</div>
-            <div class="tl-desc">Тестирование транспортного слоя платформы CRP: SMPP-протокол, балансировка соединений, обработка статусов, нарезка многосоставных сообщений, бинарные сообщения, Kafka, TTL, retry-логика. Адаптеры: SMS/SMPP, HTTP, WhatsApp, Viber. Приёмочные тесты платформы end-to-end.</div>
+            <div class="tl-company" style="color:rgba(108,99,255,.8)" data-i18n="exp-2-company">SevenTech · Транспортные адаптеры</div>
+            <div class="tl-role" data-i18n="exp-2-role">Инженер по тестированию ПО</div>
+            <div class="tl-desc" data-i18n="exp-2-desc">Тестирование транспортного слоя платформы CRP: SMPP-протокол, балансировка соединений, обработка статусов, нарезка многосоставных сообщений, бинарные сообщения, Kafka, TTL, retry-логика. Адаптеры: SMS/SMPP, HTTP, WhatsApp, Viber. Приёмочные тесты платформы end-to-end.</div>
           </div>
         </div>
         <div class="tl-item reveal reveal-delay-1">
-          <div class="tl-date">Июн — Авг 2023</div>
+          <div class="tl-date" data-i18n="exp-3-date">Июн — Авг 2023</div>
           <div class="tl-line"><div class="tl-dot" style="background:var(--accent2)"></div><div class="tl-connector"></div></div>
           <div class="tl-content">
             <div class="tl-company" style="color:var(--accent2)">Инфотек</div>
-            <div class="tl-role">Разметчик данных для нейросетей</div>
-            <div class="tl-desc">Разметка и аннотация данных для обучения ML-моделей. Опыт работы с неструктурированными данными и требованиями к их качеству.</div>
+            <div class="tl-role" data-i18n="exp-3-role">Разметчик данных для нейросетей</div>
+            <div class="tl-desc" data-i18n="exp-3-desc">Разметка и аннотация данных для обучения ML-моделей. Опыт работы с неструктурированными данными и требованиями к их качеству.</div>
           </div>
         </div>
         <div class="tl-item reveal reveal-delay-2">
-          <div class="tl-date">Янв 2017 — Апр 2023</div>
+          <div class="tl-date" data-i18n="exp-4-date">Янв 2017 — Апр 2023</div>
           <div class="tl-line"><div class="tl-dot" style="background:var(--accent3)"></div><div class="tl-connector"></div></div>
           <div class="tl-content">
-            <div class="tl-company" style="color:var(--accent3)">СтанкоРемСервис · Тверь</div>
-            <div class="tl-role">Инженер по наладке и испытаниям</div>
-            <div class="tl-desc">Испытания и приёмка сложного оборудования, ведение технической документации, расследование аварий и разработка мер по их предотвращению. Здесь сформировался системный подход к поиску причин отказов — основа QA-мышления.</div>
+            <div class="tl-company" style="color:var(--accent3)" data-i18n="exp-4-company">СтанкоРемСервис · Тверь</div>
+            <div class="tl-role" data-i18n="exp-4-role">Инженер по наладке и испытаниям</div>
+            <div class="tl-desc" data-i18n="exp-4-desc">Испытания и приёмка сложного оборудования, ведение технической документации, расследование аварий и разработка мер по их предотвращению. Здесь сформировался системный подход к поиску причин отказов — основа QA-мышления.</div>
           </div>
         </div>
         <div class="tl-item reveal reveal-delay-3">
-          <div class="tl-date">Апр 2007 — Сен 2017</div>
+          <div class="tl-date" data-i18n="exp-5-date">Апр 2007 — Сен 2017</div>
           <div class="tl-line"><div class="tl-dot" style="background:var(--muted)"></div><div class="tl-connector"></div></div>
           <div class="tl-content">
-            <div class="tl-company" style="color:var(--muted)">ОАО ТВЗ · Тверь</div>
-            <div class="tl-role">Наладчик · Тестирование систем управления</div>
-            <div class="tl-desc">Тестирование систем контроля и управления сварочных комплексов с программным управлением. Наладка оборудования с микропроцессорным управлением — фактически тестирование embedded-систем на производстве.</div>
+            <div class="tl-company" style="color:var(--muted)" data-i18n="exp-5-company">ОАО ТВЗ · Тверь</div>
+            <div class="tl-role" data-i18n="exp-5-role">Наладчик · Тестирование систем управления</div>
+            <div class="tl-desc" data-i18n="exp-5-desc">Тестирование систем контроля и управления сварочных комплексов с программным управлением. Наладка оборудования с микропроцессорным управлением — фактически тестирование embedded-систем на производстве.</div>
           </div>
         </div>
       </div>
@@ -902,17 +907,16 @@
   <!-- How I write tests -->
   <section id="approach" style="background: var(--surface);">
     <div class="container">
-      <div class="section-label">Подход</div>
-      <h2 class="section-title reveal">Как я пишу автотесты</h2>
+      <div class="section-label" data-i18n="approach-label">Подход</div>
+      <h2 class="section-title reveal" data-i18n="approach-title">Как я пишу автотесты</h2>
 
-      <!-- Architecture layers -->
       <div class="reveal" style="margin-bottom: 64px;">
-        <div style="font-size:.8rem; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin-bottom: 20px;">Архитектура фреймворка</div>
+        <div style="font-size:.8rem; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin-bottom: 20px;" data-i18n="approach-arch">Архитектура фреймворка</div>
         <div class="arch-layers">
           <div class="arch-layer" style="--layer-color: #6c63ff;">
             <div class="arch-layer-icon">🧪</div>
             <div class="arch-layer-name">Test Layer</div>
-            <div class="arch-layer-desc">JUnit 5 тест-классы с аннотациями @TmsLink, @DisplayName. Логика теста — только бизнес-сценарий, без деталей реализации.</div>
+            <div class="arch-layer-desc" data-i18n="layer-1-desc">JUnit 5 тест-классы с аннотациями @TmsLink, @DisplayName. Логика теста — только бизнес-сценарий, без деталей реализации.</div>
             <div class="arch-layer-tech">
               <span>Playwright</span><span>Selenide</span><span>JUnit 5</span>
             </div>
@@ -921,7 +925,7 @@
           <div class="arch-layer" style="--layer-color: #ff6584;">
             <div class="arch-layer-icon">📄</div>
             <div class="arch-layer-name">Page Object Layer</div>
-            <div class="arch-layer-desc">Страницы инкапсулируют локаторы и действия. Тесты не знают про CSS-селекторы — только про методы типа clickApplyFilter().</div>
+            <div class="arch-layer-desc" data-i18n="layer-2-desc">Страницы инкапсулируют локаторы и действия. Тесты не знают про CSS-селекторы — только про методы типа clickApplyFilter().</div>
             <div class="arch-layer-tech">
               <span>Page Object Model</span><span>Локаторы</span><span>Actions</span>
             </div>
@@ -930,7 +934,7 @@
           <div class="arch-layer" style="--layer-color: #43e97b;">
             <div class="arch-layer-icon">🔧</div>
             <div class="arch-layer-name">Service / Helper Layer</div>
-            <div class="arch-layer-desc">Builders для генерации тестовых данных (MessageBuilder, AgentBuilder). Operations — переиспользуемые действия с ожиданием логов.</div>
+            <div class="arch-layer-desc" data-i18n="layer-3-desc">Builders для генерации тестовых данных (MessageBuilder, AgentBuilder). Operations — переиспользуемые действия с ожиданием логов.</div>
             <div class="arch-layer-tech">
               <span>Builder Pattern</span><span>DataFaker</span><span>Operations</span>
             </div>
@@ -939,7 +943,7 @@
           <div class="arch-layer" style="--layer-color: #ff9f43;">
             <div class="arch-layer-icon">🌐</div>
             <div class="arch-layer-name">API / Transport Layer</div>
-            <div class="arch-layer-desc">REST Assured для HTTP, кастомный gRPC-клиент для серверных команд (назначение агента, смена статуса диалога), Kafka для событий.</div>
+            <div class="arch-layer-desc" data-i18n="layer-4-desc">REST Assured для HTTP, кастомный gRPC-клиент для серверных команд (назначение агента, смена статуса диалога), Kafka для событий.</div>
             <div class="arch-layer-tech">
               <span>REST Assured</span><span>gRPC</span><span>Kafka</span><span>WebSocket</span>
             </div>
@@ -948,7 +952,7 @@
           <div class="arch-layer" style="--layer-color: #00bcd4;">
             <div class="arch-layer-icon">🗄️</div>
             <div class="arch-layer-name">Database Layer</div>
-            <div class="arch-layer-desc">Прямая работа с PostgreSQL через JDBI — получение ID диалогов, валидация данных в БД, обновление дат для временных сценариев.</div>
+            <div class="arch-layer-desc" data-i18n="layer-5-desc">Прямая работа с PostgreSQL через JDBI — получение ID диалогов, валидация данных в БД, обновление дат для временных сценариев.</div>
             <div class="arch-layer-tech">
               <span>JDBI</span><span>PostgreSQL</span><span>DataGrip</span>
             </div>
@@ -957,37 +961,37 @@
       </div>
 
       <!-- Patterns & Principles -->
-      <div style="font-size:.8rem; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin-bottom: 20px;">Паттерны и принципы</div>
+      <div style="font-size:.8rem; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin-bottom: 20px;" data-i18n="approach-patt">Паттерны и принципы</div>
       <div class="patterns-grid reveal">
         <div class="pattern-card">
           <div class="pattern-icon">🏗️</div>
           <div class="pattern-name">Page Object Model</div>
-          <div class="pattern-desc">Каждый экран — отдельный класс. Тест читается как сценарий, не как набор локаторов. Легко поддерживать при изменении UI.</div>
+          <div class="pattern-desc" data-i18n="pat-1-desc">Каждый экран — отдельный класс. Тест читается как сценарий, не как набор локаторов. Легко поддерживать при изменении UI.</div>
         </div>
         <div class="pattern-card">
           <div class="pattern-icon">🔨</div>
           <div class="pattern-name">Builder Pattern</div>
-          <div class="pattern-desc">Генерация тестовых данных через Builders + DataFaker. Каждый тест получает уникальные данные — нет зависимостей между тестами.</div>
+          <div class="pattern-desc" data-i18n="pat-2-desc">Генерация тестовых данных через Builders + DataFaker. Каждый тест получает уникальные данные — нет зависимостей между тестами.</div>
         </div>
         <div class="pattern-card">
           <div class="pattern-icon">⏱️</div>
           <div class="pattern-name">Log Waiter</div>
-          <div class="pattern-desc">Вместо Thread.sleep() — ожидание конкретного события в логах (CUSTOMER, AGENT_ASSIGNED). Тесты стабильны и не падают на флаках.</div>
+          <div class="pattern-desc" data-i18n="pat-3-desc">Вместо Thread.sleep() — ожидание конкретного события в логах (CUSTOMER, AGENT_ASSIGNED). Тесты стабильны и не падают на флаках.</div>
         </div>
         <div class="pattern-card">
           <div class="pattern-icon">🔄</div>
           <div class="pattern-name">Retry Extension</div>
-          <div class="pattern-desc">Кастомный JUnit 5 extension для автоматического повтора нестабильных тестов. Настраиваемое количество попыток через аннотацию.</div>
+          <div class="pattern-desc" data-i18n="pat-4-desc">Кастомный JUnit 5 extension для автоматического повтора нестабильных тестов. Настраиваемое количество попыток через аннотацию.</div>
         </div>
         <div class="pattern-card">
           <div class="pattern-icon">🔗</div>
           <div class="pattern-name">TMS Integration</div>
-          <div class="pattern-desc">Результаты тестов автоматически отправляются в TMS через @TmsLink. После прогона статусы обновляются без ручного труда.</div>
+          <div class="pattern-desc" data-i18n="pat-5-desc">Результаты тестов автоматически отправляются в TMS через @TmsLink. После прогона статусы обновляются без ручного труда.</div>
         </div>
         <div class="pattern-card">
           <div class="pattern-icon">🌐</div>
           <div class="pattern-name">Multi-Protocol</div>
-          <div class="pattern-desc">Один тест может: отправить сообщение через REST, назначить агента через gRPC, проверить статус в Kafka и валидировать данные в БД.</div>
+          <div class="pattern-desc" data-i18n="pat-6-desc">Один тест может: отправить сообщение через REST, назначить агента через gRPC, проверить статус в Kafka и валидировать данные в БД.</div>
         </div>
       </div>
 
@@ -997,15 +1001,15 @@
   <!-- Projects — Bento Grid -->
   <section id="projects">
     <div class="container">
-      <div class="section-label">Проекты</div>
-      <h2 class="section-title reveal">Избранные работы</h2>
+      <div class="section-label" data-i18n="proj-label">Проекты</div>
+      <h2 class="section-title reveal" data-i18n="proj-title">Избранные работы</h2>
       <div class="bento reveal">
 
         <div class="bento-card col-4 featured">
           <div class="card-icon">💬</div>
           <div class="card-tag tag-purple">SevenTech · 498 Java-файлов</div>
-          <div class="card-title">Контакт-Центр — автотесты (Playwright)</div>
-          <div class="card-desc">UI + API + gRPC + Kafka + DB автотесты enterprise контакт-центра. Покрытие: диалоги, маршрутизация, чат-боты, CSAT, аналитика, агенты, расписания, шаблоны. Каналы: WhatsApp, Telegram, VK, SMS, LiveChat. Интеграция с внутренним TMS.</div>
+          <div class="card-title" data-i18n="proj-1-title">Контакт-Центр — автотесты (Playwright)</div>
+          <div class="card-desc" data-i18n="proj-1-desc">UI + API + gRPC + Kafka + DB автотесты enterprise контакт-центра. Покрытие: диалоги, маршрутизация, чат-боты, CSAT, аналитика, агенты, расписания, шаблоны. Каналы: WhatsApp, Telegram, VK, SMS, LiveChat. Интеграция с внутренним TMS.</div>
           <div class="card-tech">
             <span class="tech-badge">Playwright</span>
             <span class="tech-badge">JUnit 5</span>
@@ -1022,7 +1026,7 @@
           <div class="card-icon">🏢</div>
           <div class="card-tag tag-pink">Мегафон · 601 Java-файл</div>
           <div class="card-title">Admin Panel (Selenide)</div>
-          <div class="card-desc">Автотесты административной панели МФ: клиенты, пользователи, пагинация, сортировка, права доступа. Selenide + TestIt + Allure.</div>
+          <div class="card-desc" data-i18n="proj-2-desc">Автотесты административной панели МФ: клиенты, пользователи, пагинация, сортировка, права доступа. Selenide + TestIt + Allure.</div>
           <div class="card-tech">
             <span class="tech-badge">Selenide</span>
             <span class="tech-badge">TestIt</span>
@@ -1034,8 +1038,8 @@
         <div class="bento-card col-3">
           <div class="card-icon">📡</div>
           <div class="card-tag tag-pink">Telecom · SMPP + Kafka</div>
-          <div class="card-title">Транспортные адаптеры CRP</div>
-          <div class="card-desc">Тестирование транспортного слоя: SMPP-протокол, балансировка соединений, бинарные сообщения, нарезка кириллицы/латиницы, Kafka, TTL, retry. Адаптеры: SMS, HTTP, WhatsApp, Viber. Приёмочные тесты e2e.</div>
+          <div class="card-title" data-i18n="proj-3-title">Транспортные адаптеры CRP</div>
+          <div class="card-desc" data-i18n="proj-3-desc">Тестирование транспортного слоя: SMPP-протокол, балансировка соединений, бинарные сообщения, нарезка кириллицы/латиницы, Kafka, TTL, retry. Адаптеры: SMS, HTTP, WhatsApp, Viber. Приёмочные тесты e2e.</div>
           <div class="card-tech">
             <span class="tech-badge">SMPP</span>
             <span class="tech-badge">Kafka</span>
@@ -1049,7 +1053,7 @@
           <div class="card-icon">⚡</div>
           <div class="card-tag tag-green">JMeter · Нагрузка</div>
           <div class="card-title">Load Testing: API Users Service</div>
-          <div class="card-desc">JMeter-сценарии для нагрузочного тестирования API: создание и обновление пользователей под нагрузкой. Проверка стабильности, времени отклика, деградации при пиковых запросах.</div>
+          <div class="card-desc" data-i18n="proj-4-desc">JMeter-сценарии для нагрузочного тестирования API: создание и обновление пользователей под нагрузкой. Проверка стабильности, времени отклика, деградации при пиковых запросах.</div>
           <div class="card-tech">
             <span class="tech-badge">JMeter</span>
             <span class="tech-badge">Thread Groups</span>
@@ -1065,31 +1069,31 @@
   <!-- Education -->
   <section id="education">
     <div class="container">
-      <div class="section-label">Образование</div>
-      <h2 class="section-title reveal">Учёба & Курсы</h2>
+      <div class="section-label" data-i18n="edu-label">Образование</div>
+      <h2 class="section-title reveal" data-i18n="edu-title">Учёба & Курсы</h2>
       <div class="edu-grid reveal">
 
         <div class="edu-card">
           <div class="edu-year">2022</div>
           <div class="edu-icon">🎓</div>
           <div class="edu-name">SkillFactory</div>
-          <div class="edu-spec">Инженер по тестированию ПО · QA Engineer</div>
+          <div class="edu-spec" data-i18n="edu-1-spec">Инженер по тестированию ПО · QA Engineer</div>
           <div class="edu-org">SkillFactory</div>
         </div>
 
         <div class="edu-card">
           <div class="edu-year">2017</div>
           <div class="edu-icon">🏛</div>
-          <div class="edu-name">ТГТУ — Тверской государственный технический университет</div>
-          <div class="edu-spec">Электроэнергетика</div>
-          <div class="edu-org">Бакалавр · Тверь</div>
+          <div class="edu-name" data-i18n="edu-2-name">ТГТУ — Тверской государственный технический университет</div>
+          <div class="edu-spec" data-i18n="edu-2-spec">Электроэнергетика</div>
+          <div class="edu-org" data-i18n="edu-2-org">Бакалавр · Тверь</div>
         </div>
 
         <div class="edu-card">
           <div class="edu-year">2020</div>
           <div class="edu-icon">⚙️</div>
           <div class="edu-name">Siemens SIMATIC S7 PRG1</div>
-          <div class="edu-spec">Программирование ПЛК Siemens</div>
+          <div class="edu-spec" data-i18n="edu-3-spec">Программирование ПЛК Siemens</div>
           <div class="edu-org">СтанкоРемСервис</div>
         </div>
 
@@ -1097,7 +1101,7 @@
           <div class="edu-year">2006</div>
           <div class="edu-icon">🔧</div>
           <div class="edu-name">Профессиональный лицей №41</div>
-          <div class="edu-spec">Регулировщик РЭА и П</div>
+          <div class="edu-spec" data-i18n="edu-4-spec">Регулировщик РЭА и П</div>
           <div class="edu-org">Тверь</div>
         </div>
 
@@ -1109,15 +1113,15 @@
   <section id="contact">
     <div class="container">
       <div class="contact-box reveal">
-        <div class="section-label" style="text-align:center; display:block;">Контакты</div>
-        <div class="contact-title">Открыт к предложениям</div>
-        <p class="contact-sub">Ищу full-time позицию QA Engineer / Automation Engineer. Удалённо или офис в Твери. Готов к редким командировкам.</p>
+        <div class="section-label" style="text-align:center; display:block;" data-i18n="contact-label">Контакты</div>
+        <div class="contact-title" data-i18n="contact-title">Открыт к предложениям</div>
+        <p class="contact-sub" data-i18n="contact-sub">Ищу full-time позицию QA Engineer / Automation Engineer. Удалённо или офис в Твери. Готов к редким командировкам.</p>
         <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-bottom: 32px;">
           <a href="mailto:i@dhollow.ru" class="btn-primary" style="display:inline-flex;">
             i@dhollow.ru ✉️
           </a>
           <a href="resume.pdf" download="Khalikov_Dmitrij_QA_Engineer.pdf" class="btn-outline" style="display:inline-flex;">
-            ⬇ Скачать резюме PDF
+            <span data-i18n="contact-pdf">⬇ Скачать резюме PDF</span>
           </a>
         </div>
         <div class="social-links">
@@ -1131,7 +1135,7 @@
 
   <footer>
     <div class="container">
-      <p style="margin-bottom:6px">© 2026 Дмитрий Халиков — QA Engineer, который тестирует всё. Даже этот сайт.</p>
+      <p style="margin-bottom:6px">© 2026 Дмитрий Халиков — <span data-i18n="footer-text">QA Engineer, который тестирует всё. Даже этот сайт.</span></p>
       <p style="font-size:.75rem; color:#444">Тверь · i@dhollow.ru · github.com/Delakroa</p>
     </div>
   </footer>
@@ -1162,6 +1166,161 @@
       const y = (e.clientY / window.innerHeight - .5) * 8;
       hero.style.transform = `translate(${x}px, ${y}px)`;
     });
+
+    // ── Language switcher ────────────────────────────────────────
+    const translations = {
+      // Nav
+      'nav-about':      { ru: 'О себе',      en: 'About' },
+      'nav-skills':     { ru: 'Навыки',       en: 'Skills' },
+      'nav-experience': { ru: 'Опыт',         en: 'Experience' },
+      'nav-approach':   { ru: 'Подход',       en: 'Approach' },
+      'nav-projects':   { ru: 'Проекты',      en: 'Projects' },
+      'nav-education':  { ru: 'Образование',  en: 'Education' },
+      'nav-contact':    { ru: 'Контакты',     en: 'Contact' },
+
+      // Hero
+      'hero-badge':     { ru: 'Открыт к предложениям', en: 'Open to opportunities' },
+      'hero-sub':       { ru: 'Нахожу баги глубже пользовательского уровня — понимаю системы изнутри, потому что сам их строил и испытывал.', en: 'I find bugs deeper than the user level — I understand systems from the inside, because I built and tested them myself.' },
+      'hero-btn-projects': { ru: 'Посмотреть проекты →', en: 'View projects →' },
+      'hero-btn-contact':  { ru: 'Связаться',            en: 'Contact me' },
+      'hero-btn-pdf':      { ru: '⬇ Резюме PDF',         en: '⬇ Resume PDF' },
+
+      // About
+      'about-label':    { ru: 'О себе',          en: 'About' },
+      'about-title':    { ru: 'Привет, я Дмитрий', en: 'Hi, I\'m Dmitrij' },
+      'about-p1':       { ru: 'QA Engineer с <strong>аналитическим мышлением</strong> и нестандартным путём в профессию. До IT — 10+ лет в промышленной инженерии: наладка сложных систем, испытания оборудования, техническая документация.', en: 'QA Engineer with an <strong>analytical mindset</strong> and an unconventional path into the profession. Before IT — 10+ years in industrial engineering: complex system setup, equipment testing, technical documentation.' },
+      'about-p2':       { ru: 'Этот бэкграунд даёт мне суперсилу в тестировании: я понимаю поведение системы <strong>глубже пользовательского уровня</strong> — на уровне логики, архитектуры и краевых состояний.', en: 'This background gives me a superpower in testing: I understand system behaviour <strong>deeper than the user level</strong> — at the level of logic, architecture and edge states.' },
+      'about-p3':       { ru: 'Сейчас в <strong>SevenTech</strong> тестирую front + back сложных интеграционных решений. Умею находить неочевидные баги и ценю предсказуемость и прозрачность процессов.', en: 'Currently at <strong>SevenTech</strong> I test front + back of complex integration solutions. I find non-obvious bugs and value predictability and transparency.' },
+      'stat-1':         { ru: 'Лет общего опыта работы', en: 'Years of total experience' },
+      'stat-2':         { ru: 'Года в QA Automation',    en: 'Years in QA Automation' },
+      'stat-3':         { ru: 'Тестирование на текущем проекте', en: 'Testing on current project' },
+      'stat-4':         { ru: 'Удалённо / офис',         en: 'Remote / office' },
+      'moment-1-title': { ru: 'С Дробышевским на IT-конференции МТС', en: 'With Drobyshevsky at MTS IT Conference' },
+      'moment-1-sub':   { ru: 'Слежу за трендами индустрии, хожу на конференции', en: 'I follow industry trends and attend conferences' },
+      'moment-2-title': { ru: 'Команда, с которой делаем продукт', en: 'The team we build the product with' },
+      'moment-2-sub':   { ru: 'Умею работать в команде и ценю командный дух', en: 'I work well in a team and value team spirit' },
+
+      // Skills
+      'skills-label':   { ru: 'Навыки',              en: 'Skills' },
+      'skills-title':   { ru: 'Инструменты качества', en: 'Quality Toolset' },
+      'skills-cat-1':   { ru: 'Языки & Фреймворки',  en: 'Languages & Frameworks' },
+      'skills-cat-2':   { ru: 'UI & API Automation',  en: 'UI & API Automation' },
+      'skills-cat-3':   { ru: 'Отчётность & Инфраструктура', en: 'Reporting & Infrastructure' },
+      'skills-cat-4':   { ru: 'Процессы & Инструменты',      en: 'Processes & Tools' },
+
+      // AI
+      'ai-label':       { ru: 'AI & Автоматизация',      en: 'AI & Automation' },
+      'ai-title':       { ru: 'Работаю с AI как с коллегой', en: 'I use AI as a colleague' },
+      'ai-statement':   { ru: 'Использую AI-инструменты не как поисковик, а как часть рабочего процесса — для ускорения тест-дизайна, анализа кода и автоматизации рутины. Настраиваю MCP-интеграции, оркестраторы и правила, чтобы AI понимал контекст проекта.', en: 'I use AI tools not as a search engine, but as part of the workflow — to speed up test design, code analysis and routine automation. I configure MCP integrations, orchestrators and rules so that AI understands the project context.' },
+      'ai-mcp-desc':    { ru: 'Подключаю Claude напрямую к рабочим инструментам через MCP-серверы. Например: Claude читает проекты из TMS, анализирует тест-кейсы и помогает с описанием — без copy-paste.', en: 'I connect Claude directly to work tools via MCP servers. For example: Claude reads projects from TMS, analyses test cases and helps with descriptions — no copy-paste.' },
+      'ai-orch-title':  { ru: 'AI Оркестраторы', en: 'AI Orchestrators' },
+      'ai-orch-desc':   { ru: 'Claude Code как основной агент для работы с кодом. Cursor и Windsurf для навигации по большим проектам. Настраиваю агентов под конкретные задачи QA.', en: 'Claude Code as the main agent for code work. Cursor and Windsurf for navigating large projects. I configure agents for specific QA tasks.' },
+      'ai-rules-desc':  { ru: 'Пишу правила и контекстные файлы для AI — чтобы агент знал стек, соглашения проекта и не предлагал лишнего. Один раз настроил — AI работает как джуниор в команде.', en: 'I write rules and context files for AI — so the agent knows the stack, project conventions and doesn\'t suggest irrelevant things. Set up once — AI works like a junior teammate.' },
+      'ai-assist-title':{ ru: 'AI Ассистенты', en: 'AI Assistants' },
+      'ai-assist-desc': { ru: 'Claude, ChatGPT, Gemini — для тест-дизайна, анализа логов, объяснения незнакомого кода. GitHub Copilot — для ускорения написания Page Object классов и boilerplate.', en: 'Claude, ChatGPT, Gemini — for test design, log analysis, explaining unfamiliar code. GitHub Copilot — to speed up writing Page Object classes and boilerplate.' },
+      'ai-qa-title':    { ru: 'AI в QA-процессах', en: 'AI in QA Processes' },
+      'ai-qa-desc':     { ru: 'Генерация тест-кейсов по требованиям, анализ allure-отчётов, поиск паттернов в падениях, ревью автотестов, написание технической документации.', en: 'Test case generation from requirements, Allure report analysis, failure pattern detection, autotest review, technical documentation writing.' },
+      'ai-qa-ex-1':     { ru: 'Тест-дизайн',  en: 'Test design' },
+      'ai-qa-ex-2':     { ru: 'Анализ логов', en: 'Log analysis' },
+      'ai-qa-ex-4':     { ru: 'Документация', en: 'Documentation' },
+      'ai-next-title':  { ru: 'Мультиагентные пайплайны для QA', en: 'Multi-agent pipelines for QA' },
+      'ai-next-badge':  { ru: 'Следующий шаг', en: 'Next step' },
+      'ai-next-desc':   { ru: 'Изучаю Agent SDK и построение мультиагентных пайплайнов для автоматизации QA-рутины — от анализа требований до создания тест-кейсов в TMS.', en: 'Studying Agent SDK and multi-agent pipeline design to automate QA routine — from requirements analysis to test case creation in TMS.' },
+
+      // Experience
+      'exp-label':      { ru: 'Опыт',         en: 'Experience' },
+      'exp-title':      { ru: 'Где я работал', en: 'Where I worked' },
+      'exp-1-date':     { ru: '~ 2024 — сейчас',    en: '~ 2024 — present' },
+      'exp-1-role':     { ru: 'Инженер по тестированию ПО', en: 'Software Test Engineer' },
+      'exp-1-desc':     { ru: 'Тестирование enterprise контакт-центра — front и back. Диалоги, маршрутизация, чат-боты, CSAT, аналитика, ролевая модель, шаблоны сообщений, расписания агентов. Каналы: WhatsApp, Telegram, VK, SMS, LiveChat. Более 30 проектов в TMS по этому продукту.', en: 'Testing enterprise contact centre — front and back. Dialogues, routing, chatbots, CSAT, analytics, role model, message templates, agent schedules. Channels: WhatsApp, Telegram, VK, SMS, LiveChat. 30+ TMS projects for this product.' },
+      'exp-2-date':     { ru: 'Авг 2023 — ~ 2024', en: 'Aug 2023 — ~ 2024' },
+      'exp-2-company':  { ru: 'SevenTech · Транспортные адаптеры', en: 'SevenTech · Transport Adapters' },
+      'exp-2-role':     { ru: 'Инженер по тестированию ПО', en: 'Software Test Engineer' },
+      'exp-2-desc':     { ru: 'Тестирование транспортного слоя платформы CRP: SMPP-протокол, балансировка соединений, обработка статусов, нарезка многосоставных сообщений, бинарные сообщения, Kafka, TTL, retry-логика. Адаптеры: SMS/SMPP, HTTP, WhatsApp, Viber. Приёмочные тесты платформы end-to-end.', en: 'Testing the transport layer of the CRP platform: SMPP protocol, connection balancing, status handling, multipart message splitting, binary messages, Kafka, TTL, retry logic. Adapters: SMS/SMPP, HTTP, WhatsApp, Viber. End-to-end acceptance tests.' },
+      'exp-3-date':     { ru: 'Июн — Авг 2023', en: 'Jun — Aug 2023' },
+      'exp-3-role':     { ru: 'Разметчик данных для нейросетей', en: 'ML Data Annotator' },
+      'exp-3-desc':     { ru: 'Разметка и аннотация данных для обучения ML-моделей. Опыт работы с неструктурированными данными и требованиями к их качеству.', en: 'Data labelling and annotation for ML model training. Experience working with unstructured data and quality requirements.' },
+      'exp-4-date':     { ru: 'Янв 2017 — Апр 2023', en: 'Jan 2017 — Apr 2023' },
+      'exp-4-company':  { ru: 'СтанкоРемСервис · Тверь', en: 'StankoRemService · Tver' },
+      'exp-4-role':     { ru: 'Инженер по наладке и испытаниям', en: 'Commissioning & Test Engineer' },
+      'exp-4-desc':     { ru: 'Испытания и приёмка сложного оборудования, ведение технической документации, расследование аварий и разработка мер по их предотвращению. Здесь сформировался системный подход к поиску причин отказов — основа QA-мышления.', en: 'Testing and acceptance of complex equipment, technical documentation, accident investigation and prevention measures. This is where a systematic approach to root cause analysis developed — the foundation of QA thinking.' },
+      'exp-5-date':     { ru: 'Апр 2007 — Сен 2017', en: 'Apr 2007 — Sep 2017' },
+      'exp-5-company':  { ru: 'ОАО ТВЗ · Тверь', en: 'JSC TVZ · Tver' },
+      'exp-5-role':     { ru: 'Наладчик · Тестирование систем управления', en: 'Technician · Control Systems Testing' },
+      'exp-5-desc':     { ru: 'Тестирование систем контроля и управления сварочных комплексов с программным управлением. Наладка оборудования с микропроцессорным управлением — фактически тестирование embedded-систем на производстве.', en: 'Testing control systems of software-driven welding complexes. Commissioning of microprocessor-controlled equipment — effectively testing embedded systems in production.' },
+
+      // Approach
+      'approach-label': { ru: 'Подход',              en: 'Approach' },
+      'approach-title': { ru: 'Как я пишу автотесты', en: 'How I write autotests' },
+      'approach-arch':  { ru: 'Архитектура фреймворка', en: 'Framework architecture' },
+      'approach-patt':  { ru: 'Паттерны и принципы',   en: 'Patterns & principles' },
+      'layer-1-desc':   { ru: 'JUnit 5 тест-классы с аннотациями @TmsLink, @DisplayName. Логика теста — только бизнес-сценарий, без деталей реализации.', en: 'JUnit 5 test classes with @TmsLink, @DisplayName annotations. Test logic — business scenario only, no implementation details.' },
+      'layer-2-desc':   { ru: 'Страницы инкапсулируют локаторы и действия. Тесты не знают про CSS-селекторы — только про методы типа clickApplyFilter().', en: 'Pages encapsulate locators and actions. Tests know nothing about CSS selectors — only methods like clickApplyFilter().' },
+      'layer-3-desc':   { ru: 'Builders для генерации тестовых данных (MessageBuilder, AgentBuilder). Operations — переиспользуемые действия с ожиданием логов.', en: 'Builders for test data generation (MessageBuilder, AgentBuilder). Operations — reusable actions with log waiting.' },
+      'layer-4-desc':   { ru: 'REST Assured для HTTP, кастомный gRPC-клиент для серверных команд (назначение агента, смена статуса диалога), Kafka для событий.', en: 'REST Assured for HTTP, custom gRPC client for server commands (agent assignment, dialogue status change), Kafka for events.' },
+      'layer-5-desc':   { ru: 'Прямая работа с PostgreSQL через JDBI — получение ID диалогов, валидация данных в БД, обновление дат для временных сценариев.', en: 'Direct PostgreSQL work via JDBI — fetching dialogue IDs, DB data validation, date updates for time-based scenarios.' },
+      'pat-1-desc':     { ru: 'Каждый экран — отдельный класс. Тест читается как сценарий, не как набор локаторов. Легко поддерживать при изменении UI.', en: 'Each screen is a separate class. Tests read like a scenario, not a set of locators. Easy to maintain when UI changes.' },
+      'pat-2-desc':     { ru: 'Генерация тестовых данных через Builders + DataFaker. Каждый тест получает уникальные данные — нет зависимостей между тестами.', en: 'Test data generation via Builders + DataFaker. Each test gets unique data — no inter-test dependencies.' },
+      'pat-3-desc':     { ru: 'Вместо Thread.sleep() — ожидание конкретного события в логах (CUSTOMER, AGENT_ASSIGNED). Тесты стабильны и не падают на флаках.', en: 'Instead of Thread.sleep() — waiting for a specific log event (CUSTOMER, AGENT_ASSIGNED). Tests are stable and don\'t flake.' },
+      'pat-4-desc':     { ru: 'Кастомный JUnit 5 extension для автоматического повтора нестабильных тестов. Настраиваемое количество попыток через аннотацию.', en: 'Custom JUnit 5 extension for automatic retry of unstable tests. Configurable attempt count via annotation.' },
+      'pat-5-desc':     { ru: 'Результаты тестов автоматически отправляются в TMS через @TmsLink. После прогона статусы обновляются без ручного труда.', en: 'Test results are automatically sent to TMS via @TmsLink. After a run, statuses update with no manual work.' },
+      'pat-6-desc':     { ru: 'Один тест может: отправить сообщение через REST, назначить агента через gRPC, проверить статус в Kafka и валидировать данные в БД.', en: 'One test can: send a message via REST, assign an agent via gRPC, check status in Kafka and validate data in DB.' },
+
+      // Projects
+      'proj-label':     { ru: 'Проекты',         en: 'Projects' },
+      'proj-title':     { ru: 'Избранные работы', en: 'Selected works' },
+      'proj-1-title':   { ru: 'Контакт-Центр — автотесты (Playwright)', en: 'Contact Centre — autotests (Playwright)' },
+      'proj-1-desc':    { ru: 'UI + API + gRPC + Kafka + DB автотесты enterprise контакт-центра. Покрытие: диалоги, маршрутизация, чат-боты, CSAT, аналитика, агенты, расписания, шаблоны. Каналы: WhatsApp, Telegram, VK, SMS, LiveChat. Интеграция с внутренним TMS.', en: 'UI + API + gRPC + Kafka + DB autotests for an enterprise contact centre. Coverage: dialogues, routing, chatbots, CSAT, analytics, agents, schedules, templates. Channels: WhatsApp, Telegram, VK, SMS, LiveChat. Internal TMS integration.' },
+      'proj-2-desc':    { ru: 'Автотесты административной панели МФ: клиенты, пользователи, пагинация, сортировка, права доступа. Selenide + TestIt + Allure.', en: 'Admin panel autotests for MF: clients, users, pagination, sorting, access rights. Selenide + TestIt + Allure.' },
+      'proj-3-title':   { ru: 'Транспортные адаптеры CRP', en: 'CRP Transport Adapters' },
+      'proj-3-desc':    { ru: 'Тестирование транспортного слоя: SMPP-протокол, балансировка соединений, бинарные сообщения, нарезка кириллицы/латиницы, Kafka, TTL, retry. Адаптеры: SMS, HTTP, WhatsApp, Viber. Приёмочные тесты e2e.', en: 'Transport layer testing: SMPP protocol, connection balancing, binary messages, Cyrillic/Latin splitting, Kafka, TTL, retry. Adapters: SMS, HTTP, WhatsApp, Viber. E2E acceptance tests.' },
+      'proj-4-desc':    { ru: 'JMeter-сценарии для нагрузочного тестирования API: создание и обновление пользователей под нагрузкой. Проверка стабильности, времени отклика, деградации при пиковых запросах.', en: 'JMeter scenarios for API load testing: user creation and update under load. Stability, response time and degradation checks under peak load.' },
+
+      // Education
+      'edu-label':      { ru: 'Образование',  en: 'Education' },
+      'edu-title':      { ru: 'Учёба & Курсы', en: 'Education & Courses' },
+      'edu-1-spec':     { ru: 'Инженер по тестированию ПО · QA Engineer', en: 'Software Test Engineer · QA Engineer' },
+      'edu-2-name':     { ru: 'ТГТУ — Тверской государственный технический университет', en: 'TSTU — Tver State Technical University' },
+      'edu-2-spec':     { ru: 'Электроэнергетика', en: 'Electrical Engineering' },
+      'edu-2-org':      { ru: 'Бакалавр · Тверь', en: 'Bachelor · Tver' },
+      'edu-3-spec':     { ru: 'Программирование ПЛК Siemens', en: 'Siemens PLC Programming' },
+      'edu-4-spec':     { ru: 'Регулировщик РЭА и П', en: 'Electronic Equipment Adjuster' },
+
+      // Contact
+      'contact-label':  { ru: 'Контакты',           en: 'Contact' },
+      'contact-title':  { ru: 'Открыт к предложениям', en: 'Open to opportunities' },
+      'contact-sub':    { ru: 'Ищу full-time позицию QA Engineer / Automation Engineer. Удалённо или офис в Твери. Готов к редким командировкам.', en: 'Looking for a full-time QA Engineer / Automation Engineer position. Remote or office in Tver. Open to occasional travel.' },
+      'contact-pdf':    { ru: '⬇ Скачать резюме PDF', en: '⬇ Download Resume PDF' },
+
+      // Footer
+      'footer-text':    { ru: 'QA Engineer, который тестирует всё. Даже этот сайт.', en: 'QA Engineer who tests everything. Even this website.' },
+    };
+
+    let currentLang = 'ru';
+
+    function toggleLang() {
+      currentLang = currentLang === 'ru' ? 'en' : 'ru';
+      document.getElementById('langBtn').textContent = currentLang === 'ru' ? 'EN' : 'RU';
+      applyLang(currentLang);
+    }
+
+    function applyLang(lang) {
+      // Nav links
+      document.querySelectorAll('.nav-links a[data-ru]').forEach(el => {
+        el.textContent = el.getAttribute('data-' + lang);
+      });
+      // All elements with data-i18n
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (!translations[key]) return;
+        const val = translations[key][lang];
+        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+          el.placeholder = val;
+        } else {
+          el.innerHTML = val;
+        }
+      });
+    }
   </script>
 </body>
 </html>
