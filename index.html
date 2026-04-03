@@ -1764,7 +1764,7 @@
 
     // ── 4. 3D Tilt — все карточки (только десктоп) ───────────────
     if (window.matchMedia('(hover: hover)').matches) {
-      const tiltTargets = '.bento-card, .stat-card, .pattern-card, .edu-card, .moment-card, .ai-card';
+      const tiltTargets = '.bento-card, .stat-card, .pattern-card, .edu-card, .moment-card, .ai-card, .ai-statement';
       document.querySelectorAll(tiltTargets).forEach(card => {
         card.style.transition = 'transform .18s ease, border-color .3s, box-shadow .18s';
         card.addEventListener('mousemove', e => {
