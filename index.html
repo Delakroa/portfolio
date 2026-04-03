@@ -11,6 +11,10 @@
   <meta name="author" content="Дмитрий Халиков" />
   <link rel="canonical" href="https://delakroa.github.io/portfolio/" />
 
+  <!-- ── Favicon ───────────────────────────────────────────────── -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%236c63ff'/><text x='50%25' y='50%25' font-family='Arial Black,Arial' font-weight='900' font-size='18' fill='white' text-anchor='middle' dominant-baseline='central'>Д</text></svg>" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%236c63ff'/><text x='50%25' y='50%25' font-family='Arial Black,Arial' font-weight='900' font-size='18' fill='white' text-anchor='middle' dominant-baseline='central'>Д</text></svg>" />
+
   <!-- ── Open Graph (превью при шаринге ссылки) ───────────────── -->
   <meta property="og:type" content="profile" />
   <meta property="og:title" content="Дмитрий Халиков — QA Engineer · Test Automation" />
@@ -64,6 +68,11 @@
       font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
       line-height: 1.6;
       overflow-x: hidden;
+      animation: pageFadeIn .6s ease both;
+    }
+    @keyframes pageFadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     /* ── Animated mesh background ─────────────────────────────── */
@@ -613,7 +622,7 @@
         </div>
         <div class="hero-avatar-wrap">
           <div class="hero-avatar">
-            <img src="photo-solo.jpg" alt="Дмитрий Халиков — QA Engineer" />
+            <img src="photo-solo.jpg" alt="Дмитрий Халиков — QA Engineer" loading="eager" />
           </div>
         </div>
       </div>
@@ -663,7 +672,7 @@
       <!-- Photo moments -->
       <div class="moments-grid reveal reveal-delay-1">
         <div class="moment-card">
-          <img src="photo-drobyshevsky.jpg" alt="MTS True Tech Day" />
+          <img src="photo-drobyshevsky.jpg" alt="MTS True Tech Day" loading="lazy" />
           <div class="moment-caption">
             <div class="moment-badge">MTS True Tech Day</div>
             <strong>С Дробышевским на IT-конференции МТС</strong>
@@ -671,7 +680,7 @@
           </div>
         </div>
         <div class="moment-card">
-          <img src="photo-team.jpg" alt="Команда SevenTech" />
+          <img src="photo-team.jpg" alt="Команда SevenTech" loading="lazy" />
           <div class="moment-caption">
             <div class="moment-badge">SevenTech</div>
             <strong>Команда, с которой делаем продукт</strong>

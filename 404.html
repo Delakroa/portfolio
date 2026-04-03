@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 — Страница не найдена</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0f; --text: #e8e8f0; --muted: #6b6b80;
+      --accent1: #6c63ff; --accent2: #ff6584; --accent3: #43e97b;
+    }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 24px;
+      animation: fadeIn .6s ease both;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
+    /* mesh background */
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 20% 30%, rgba(108,99,255,.18), transparent),
+        radial-gradient(ellipse 50% 40% at 80% 70%, rgba(255,101,132,.12), transparent),
+        radial-gradient(ellipse 40% 60% at 60% 20%, rgba(67,233,123,.08), transparent);
+    }
+
+    .wrap { position: relative; z-index: 1; max-width: 480px; }
+
+    .code {
+      font-size: clamp(6rem, 20vw, 10rem);
+      font-weight: 900; letter-spacing: -4px; line-height: 1;
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 16px;
+    }
+    .title {
+      font-size: 1.4rem; font-weight: 700; margin-bottom: 12px;
+    }
+    .desc {
+      color: var(--muted); font-size: 1rem; line-height: 1.6; margin-bottom: 36px;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 28px; border-radius: 100px;
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      color: #fff; font-weight: 600; font-size: .95rem;
+      text-decoration: none;
+      box-shadow: 0 4px 24px rgba(108,99,255,.35);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(108,99,255,.5); }
+
+    .emoji { font-size: 3rem; margin-bottom: 20px; display: block;
+      animation: spin 4s linear infinite; }
+    @keyframes spin {
+      0%,100% { transform: rotate(-10deg); }
+      50% { transform: rotate(10deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <span class="emoji">🐛</span>
+    <div class="code">404</div>
+    <div class="title">Баг найден. Страница — нет.</div>
+    <p class="desc">
+      Похоже, эта страница не прошла тест-кейс на существование.<br>
+      Зато главная — точно работает.
+    </p>
+    <a href="/portfolio/" class="btn">← Вернуться на главную</a>
+  </div>
+</body>
+</html>
