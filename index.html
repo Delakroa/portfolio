@@ -431,7 +431,7 @@
       overflow: hidden;
     }
     .moment-card img {
-      width: 100%; height: 420px;
+      width: 100%; height: clamp(320px, 52vw, 600px);
       object-fit: cover; object-position: center top;
       display: block;
       transition: transform 6s ease;
@@ -481,7 +481,7 @@
       font-size: .75rem; color: rgba(255,255,255,.6);
     }
     @media (max-width: 768px) {
-      .moment-card img { height: 280px; }
+      .moment-card img { height: clamp(260px, 72vw, 380px); }
       .car-btn { width: 36px; height: 36px; font-size: .9rem; }
     }
 
