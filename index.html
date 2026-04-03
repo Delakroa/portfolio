@@ -415,34 +415,74 @@
     }
 
     /* ── Moments (photo grid) ────────────────────────────────── */
-    .moments-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 20px; margin-top: 40px;
+    /* ── Photo Carousel ──────────────────────────────────────── */
+    .carousel-wrap { position: relative; margin-top: 40px; }
+    .carousel-viewport {
+      overflow: hidden; border-radius: 20px;
+      border: 1px solid var(--border);
+    }
+    .carousel-track {
+      display: flex;
+      transition: transform .55s cubic-bezier(.4,0,.2,1);
+      will-change: transform;
     }
     .moment-card {
-      position: relative; border-radius: var(--radius);
-      overflow: hidden; border: 1px solid var(--border);
-      transition: border-color .3s, transform .3s;
+      flex: 0 0 100%; position: relative;
+      overflow: hidden;
     }
-    .moment-card:hover { border-color: rgba(108,99,255,.5); transform: translateY(-4px); }
     .moment-card img {
-      width: 100%; height: 340px;
-      object-fit: cover; object-position: center top; display: block;
-      transition: transform .4s;
+      width: 100%; height: 420px;
+      object-fit: cover; object-position: center;
+      display: block;
+      transition: transform 6s ease;
     }
-    .moment-card:hover img { transform: scale(1.04); }
+    .carousel-wrap:hover .moment-card img { transform: scale(1.04); }
     .moment-caption {
       position: absolute; bottom: 0; left: 0; right: 0;
-      padding: 14px 18px;
-      background: linear-gradient(transparent, rgba(10,10,14,.92));
+      padding: 40px 28px 24px;
+      background: linear-gradient(transparent, rgba(5,5,12,.95));
     }
-    .moment-caption strong { display: block; color: #fff; font-weight: 600; font-size: .9rem; }
-    .moment-caption span { color: rgba(255,255,255,.6); font-size: .78rem; }
+    .moment-caption strong { display: block; color: #fff; font-weight: 700; font-size: 1.05rem; margin-bottom: 4px; }
+    .moment-caption span { color: rgba(255,255,255,.6); font-size: .82rem; }
     .moment-badge {
-      display: inline-block; margin-bottom: 6px;
-      padding: 2px 10px; border-radius: 100px;
-      background: rgba(108,99,255,.7); color: #fff;
+      display: inline-block; margin-bottom: 10px;
+      padding: 3px 12px; border-radius: 100px;
+      background: rgba(108,99,255,.75); color: #fff;
       font-size: .72rem; font-weight: 600; letter-spacing: .5px;
+    }
+    /* Кнопки */
+    .car-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 44px; height: 44px; border-radius: 50%;
+      background: rgba(10,10,15,.8); border: 1px solid rgba(255,255,255,.12);
+      color: #fff; font-size: 1.1rem; cursor: pointer; z-index: 10;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s, border-color .2s, transform .2s;
+      backdrop-filter: blur(8px);
+    }
+    .car-btn:hover { background: rgba(108,99,255,.7); border-color: var(--accent1); transform: translateY(-50%) scale(1.1); }
+    .car-prev { left: 14px; }
+    .car-next { right: 14px; }
+    /* Точки */
+    .car-dots { display: flex; justify-content: center; gap: 8px; margin-top: 16px; }
+    .car-dot {
+      width: 8px; height: 8px; border-radius: 100px;
+      background: rgba(255,255,255,.2); border: none; cursor: pointer;
+      transition: background .3s, width .3s;
+      padding: 0;
+    }
+    .car-dot.active { background: var(--accent1); width: 24px; }
+    /* Счётчик */
+    .car-counter {
+      position: absolute; top: 16px; right: 16px; z-index: 10;
+      background: rgba(10,10,15,.7); backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,.1);
+      padding: 4px 12px; border-radius: 100px;
+      font-size: .75rem; color: rgba(255,255,255,.6);
+    }
+    @media (max-width: 768px) {
+      .moment-card img { height: 280px; }
+      .car-btn { width: 36px; height: 36px; font-size: .9rem; }
     }
 
     /* ── About ────────────────────────────────────────────────── */
@@ -794,7 +834,7 @@
       .hero-inner { flex-direction: column-reverse; gap: 32px; }
       .hero-avatar-wrap { width: 200px; height: 200px; }
       #about .about-grid { grid-template-columns: 1fr; }
-      .moments-grid { grid-template-columns: 1fr; }
+      .carousel-wrap .car-btn { opacity: .7; }
       .bento-card.col-4, .bento-card.col-2, .bento-card.col-3 { grid-column: span 6; }
       .tl-date { display: none; }
       .tl-item { grid-template-columns: 1px 1fr; }
@@ -909,24 +949,80 @@
         </div>
       </div>
 
-      <!-- Photo moments -->
-      <div class="moments-grid reveal reveal-delay-1">
-        <div class="moment-card">
-          <img src="photo-drobyshevsky.jpg" alt="MTS True Tech Day" loading="lazy" />
-          <div class="moment-caption">
-            <div class="moment-badge">MTS True Tech Day</div>
-            <strong data-i18n="moment-1-title">С Дробышевским на IT-конференции МТС</strong>
-            <span data-i18n="moment-1-sub">Слежу за трендами индустрии, хожу на конференции</span>
+      <!-- Photo carousel -->
+      <div class="carousel-wrap reveal reveal-delay-1">
+        <div class="carousel-viewport">
+          <div class="carousel-track" id="carouselTrack">
+
+            <div class="moment-card">
+              <img src="photo-drobyshevsky.jpg" alt="MTS True Tech Day" loading="lazy" />
+              <div class="moment-caption">
+                <div class="moment-badge">MTS True Tech Day</div>
+                <strong data-i18n="moment-1-title">С Дробышевским на IT-конференции МТС</strong>
+                <span data-i18n="moment-1-sub">Слежу за трендами индустрии, хожу на конференции</span>
+              </div>
+            </div>
+
+            <div class="moment-card">
+              <img src="photo-mts-truetech.jpg" alt="MTS True Tech Day доклад" loading="lazy" />
+              <div class="moment-caption">
+                <div class="moment-badge">MTS True Tech Day</div>
+                <strong data-i18n="moment-5-title">Доклад на конференции МТС</strong>
+                <span data-i18n="moment-5-sub">Слушаю лучших — применяю в работе</span>
+              </div>
+            </div>
+
+            <div class="moment-card">
+              <img src="photo-retreat.jpg" alt="Командный выезд" loading="lazy" />
+              <div class="moment-caption">
+                <div class="moment-badge">Team Retreat</div>
+                <strong data-i18n="moment-3-title">Командный выезд на природу</strong>
+                <span data-i18n="moment-3-sub">Несколько дней всей командой — сближает лучше любых митингов</span>
+              </div>
+            </div>
+
+            <div class="moment-card">
+              <img src="photo-teambuilding.jpg" alt="Тимбилдинг" loading="lazy" />
+              <div class="moment-caption">
+                <div class="moment-badge">Teambuilding</div>
+                <strong data-i18n="moment-4-title">Тимбилдинг: рисуем вместе</strong>
+                <span data-i18n="moment-4-sub">Учились слышать друг друга — через кисть и холст</span>
+              </div>
+            </div>
+
+            <div class="moment-card">
+              <img src="photo-team.jpg" alt="Команда SevenTech" loading="lazy" />
+              <div class="moment-caption">
+                <div class="moment-badge">SevenTech</div>
+                <strong data-i18n="moment-2-title">Команда, с которой делаем продукт</strong>
+                <span data-i18n="moment-2-sub">Умею работать в команде и ценю командный дух</span>
+              </div>
+            </div>
+
+            <div class="moment-card">
+              <img src="photo-newyear.jpg" alt="Новогодний корпоратив" loading="lazy" />
+              <div class="moment-caption">
+                <div class="moment-badge">Корпоратив</div>
+                <strong data-i18n="moment-6-title">Новогодний корпоратив</strong>
+                <span data-i18n="moment-6-sub">Праздновать победы вместе — часть командной культуры</span>
+              </div>
+            </div>
+
+            <div class="moment-card">
+              <img src="photo-bar.jpg" alt="Командный выход в бар" loading="lazy" />
+              <div class="moment-caption">
+                <div class="moment-badge">After Work</div>
+                <strong data-i18n="moment-7-title">Командный выход в бар</strong>
+                <span data-i18n="moment-7-sub">Неформальное общение — основа доверия в команде</span>
+              </div>
+            </div>
+
           </div>
         </div>
-        <div class="moment-card">
-          <img src="photo-team.jpg" alt="Команда SevenTech" loading="lazy" />
-          <div class="moment-caption">
-            <div class="moment-badge">SevenTech</div>
-            <strong data-i18n="moment-2-title">Команда, с которой делаем продукт</strong>
-            <span data-i18n="moment-2-sub">Умею работать в команде и ценю командный дух</span>
-          </div>
-        </div>
+        <button class="car-btn car-prev" id="carPrev" aria-label="Назад">‹</button>
+        <button class="car-btn car-next" id="carNext" aria-label="Вперёд">›</button>
+        <div class="car-counter" id="carCounter">1 / 7</div>
+        <div class="car-dots" id="carDots"></div>
       </div>
     </div>
   </section>
@@ -1503,6 +1599,16 @@
       'moment-1-sub':   { ru: 'Слежу за трендами индустрии, хожу на конференции', en: 'I follow industry trends and attend conferences' },
       'moment-2-title': { ru: 'Команда, с которой делаем продукт', en: 'The team we build the product with' },
       'moment-2-sub':   { ru: 'Умею работать в команде и ценю командный дух', en: 'I work well in a team and value team spirit' },
+      'moment-3-title': { ru: 'Командный выезд на природу', en: 'Team Retreat' },
+      'moment-3-sub':   { ru: 'Несколько дней всей командой — сближает лучше любых митингов', en: 'Several days together — bonds better than any meeting' },
+      'moment-4-title': { ru: 'Тимбилдинг: рисуем вместе', en: 'Teambuilding: painting together' },
+      'moment-4-sub':   { ru: 'Учились слышать друг друга — через кисть и холст', en: 'Learning to listen to each other — through brush and canvas' },
+      'moment-5-title': { ru: 'Доклад на конференции МТС', en: 'Talk at MTS Conference' },
+      'moment-5-sub':   { ru: 'Слушаю лучших — применяю в работе', en: 'Learning from the best — applying at work' },
+      'moment-6-title': { ru: 'Новогодний корпоратив', en: 'New Year\'s corporate party' },
+      'moment-6-sub':   { ru: 'Праздновать победы вместе — часть командной культуры', en: 'Celebrating wins together — part of team culture' },
+      'moment-7-title': { ru: 'Командный выход в бар', en: 'Team night out' },
+      'moment-7-sub':   { ru: 'Неформальное общение — основа доверия в команде', en: 'Informal communication builds real team trust' },
 
       // Skills
       'skills-label':   { ru: 'Навыки',              en: 'Skills' },
@@ -1671,6 +1777,54 @@
       const hintText = lang === 'ru' ? 'нажми, чтобы узнать больше' : 'tap for details';
       document.querySelectorAll('.stat-hint').forEach(el => { el.textContent = hintText; });
     }
+
+    // ── 0. Photo Carousel ────────────────────────────────────────
+    (function() {
+      const track = document.getElementById('carouselTrack');
+      const dotsWrap = document.getElementById('carDots');
+      const counter = document.getElementById('carCounter');
+      if (!track) return;
+      const slides = track.querySelectorAll('.moment-card');
+      const total = slides.length;
+      let cur = 0, autoTimer, isDragging = false, dragStartX = 0;
+
+      // Build dots
+      slides.forEach((_, i) => {
+        const d = document.createElement('button');
+        d.className = 'car-dot' + (i === 0 ? ' active' : '');
+        d.setAttribute('aria-label', 'Слайд ' + (i+1));
+        d.onclick = () => goTo(i);
+        dotsWrap.appendChild(d);
+      });
+
+      function goTo(n) {
+        cur = (n + total) % total;
+        track.style.transform = `translateX(-${cur * 100}%)`;
+        dotsWrap.querySelectorAll('.car-dot').forEach((d, i) => d.classList.toggle('active', i === cur));
+        counter.textContent = (cur + 1) + ' / ' + total;
+      }
+
+      function next() { goTo(cur + 1); }
+      function prev() { goTo(cur - 1); }
+
+      document.getElementById('carNext').onclick = () => { next(); resetAuto(); };
+      document.getElementById('carPrev').onclick = () => { prev(); resetAuto(); };
+
+      // Auto-play
+      function startAuto() { autoTimer = setInterval(next, 4500); }
+      function resetAuto() { clearInterval(autoTimer); startAuto(); }
+      startAuto();
+      track.parentElement.addEventListener('mouseenter', () => clearInterval(autoTimer));
+      track.parentElement.addEventListener('mouseleave', startAuto);
+
+      // Touch / swipe
+      track.addEventListener('touchstart', e => { isDragging = true; dragStartX = e.touches[0].clientX; }, { passive: true });
+      track.addEventListener('touchend', e => {
+        if (!isDragging) return; isDragging = false;
+        const dx = e.changedTouches[0].clientX - dragStartX;
+        if (Math.abs(dx) > 40) { dx < 0 ? next() : prev(); resetAuto(); }
+      });
+    })();
 
     // ── 1. Animated counters ─────────────────────────────────────
     function animateCounter(el) {
