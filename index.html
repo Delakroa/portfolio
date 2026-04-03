@@ -223,17 +223,47 @@
       transition: opacity .3s;
     }
     .cur-dot {
-      width: 6px; height: 6px;
-      background: var(--accent1);
+      width: 7px; height: 7px;
+      background: #fff;
+      box-shadow: 0 0 8px rgba(108,99,255,1);
+      mix-blend-mode: difference;
     }
     .cur-ring {
-      width: 32px; height: 32px;
-      border: 1.5px solid rgba(108,99,255,.6);
-      transition: width .2s, height .2s, border-color .2s, transform .12s ease-out;
+      width: 36px; height: 36px;
+      background: transparent;
+      /* gradient border via pseudo trick */
+      border: 2px solid transparent;
+      background-image: conic-gradient(from var(--ring-angle,0deg), #6c63ff, #ff6584, #43e97b, #ff9f43, #6c63ff);
+      background-origin: border-box;
+      -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: destination-out;
+      mask-composite: exclude;
+      transition: width .2s, height .2s;
+      animation: ringRotate 2s linear infinite;
     }
-    .cur-ring.hovered {
-      width: 48px; height: 48px;
-      border-color: rgba(108,99,255,1);
+    @property --ring-angle { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+    @keyframes ringRotate { to { --ring-angle: 360deg; } }
+    .cur-ring.hovered { width: 52px; height: 52px; }
+
+    .cur-particle {
+      position: fixed; border-radius: 50%; pointer-events: none; z-index: 9998;
+      width: 5px; height: 5px;
+      transform: translate(-50%,-50%);
+      animation: particleFade .5s forwards;
+    }
+    @keyframes particleFade {
+      0%   { opacity: .7; transform: translate(-50%,-50%) scale(1); }
+      100% { opacity: 0;  transform: translate(-50%,-50%) scale(0); }
+    }
+    .cur-ripple {
+      position: fixed; border-radius: 50%; pointer-events: none; z-index: 9997;
+      border: 2px solid rgba(108,99,255,.8);
+      width: 10px; height: 10px;
+      transform: translate(-50%,-50%);
+      animation: rippleOut .5s ease-out forwards;
+    }
+    @keyframes rippleOut {
+      to { width: 60px; height: 60px; opacity: 0; }
     }
     @media (hover: none) {
       .cur-dot, .cur-ring { display: none; }
@@ -1343,6 +1373,7 @@
     <div class="container">
       <p style="margin-bottom:6px">© 2026 Дмитрий Халиков — <span data-i18n="footer-text">QA Engineer, который тестирует всё. Даже этот сайт.</span></p>
       <p style="font-size:.75rem; color:#444">Тверь · i@dhollow.ru · github.com/Delakroa</p>
+      <p style="font-size:.65rem; color:#2a2a3a; margin-top:8px; cursor:default" title="↑↑↓↓←→←→BA" id="eggHint">🎮 для QA-инженеров: тут есть секрет</p>
     </div>
   </footer>
 
@@ -1647,11 +1678,11 @@
       el.dataset.animated = '1';
       const target = +el.dataset.count;
       const suffix = el.dataset.suffix || '';
-      const duration = 1200;
+      const duration = target >= 10 ? 2400 : 1600; // медленнее для больших чисел
       const start = performance.now();
       function tick(now) {
         const p = Math.min((now - start) / duration, 1);
-        const ease = 1 - Math.pow(1 - p, 3); // ease-out cubic
+        const ease = 1 - Math.pow(1 - p, 4); // ease-out quart — плавнее в конце
         el.textContent = Math.round(ease * target) + suffix;
         if (p < 1) requestAnimationFrame(tick);
       }
@@ -1691,48 +1722,87 @@
     const curDot = document.getElementById('curDot');
     const curRing = document.getElementById('curRing');
     let mx = -100, my = -100, rx = -100, ry = -100;
-    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; }, { passive: true });
+    const particleColors = ['#6c63ff','#ff6584','#43e97b','#ff9f43'];
+    let lastParticleTime = 0;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      // частицы след
+      const now = Date.now();
+      if (now - lastParticleTime > 60) {
+        lastParticleTime = now;
+        const p = document.createElement('div');
+        p.className = 'cur-particle';
+        p.style.left = mx + 'px'; p.style.top = my + 'px';
+        p.style.background = particleColors[Math.floor(Math.random() * particleColors.length)];
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 500);
+      }
+    }, { passive: true });
+
+    // ripple при клике
+    document.addEventListener('click', e => {
+      const r = document.createElement('div');
+      r.className = 'cur-ripple';
+      r.style.left = e.clientX + 'px'; r.style.top = e.clientY + 'px';
+      document.body.appendChild(r);
+      setTimeout(() => r.remove(), 500);
+    });
+
     (function animCursor() {
-      rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18;
+      rx += (mx - rx) * 0.14; ry += (my - ry) * 0.14;
       curDot.style.left  = mx + 'px'; curDot.style.top  = my + 'px';
       curRing.style.left = rx + 'px'; curRing.style.top = ry + 'px';
       requestAnimationFrame(animCursor);
     })();
-    document.querySelectorAll('a, button, .stat-card, .bento-card, .drawer-link').forEach(el => {
+    document.querySelectorAll('a, button, .stat-card, .bento-card, .drawer-link, .pattern-card, .arch-layer').forEach(el => {
       el.addEventListener('mouseenter', () => curRing.classList.add('hovered'));
       el.addEventListener('mouseleave', () => curRing.classList.remove('hovered'));
     });
     document.addEventListener('mouseleave', () => { curDot.style.opacity = '0'; curRing.style.opacity = '0'; });
     document.addEventListener('mouseenter', () => { curDot.style.opacity = '1'; curRing.style.opacity = '1'; });
 
-    // ── 4. 3D Tilt on project cards ──────────────────────────────
-    document.querySelectorAll('.bento-card').forEach(card => {
-      card.style.transition = 'transform .15s ease, border-color .3s, box-shadow .15s';
-      card.addEventListener('mousemove', e => {
-        const r = card.getBoundingClientRect();
-        const x = (e.clientX - r.left) / r.width  - .5;
-        const y = (e.clientY - r.top)  / r.height - .5;
-        card.style.transform = `perspective(600px) rotateY(${x * 10}deg) rotateX(${-y * 8}deg) translateY(-4px)`;
-        card.style.boxShadow = `${-x*12}px ${-y*12}px 40px rgba(108,99,255,.18)`;
+    // ── 4. 3D Tilt — все карточки (только десктоп) ───────────────
+    if (window.matchMedia('(hover: hover)').matches) {
+      const tiltTargets = '.bento-card, .stat-card, .pattern-card, .edu-card, .moment-card, .ai-card';
+      document.querySelectorAll(tiltTargets).forEach(card => {
+        card.style.transition = 'transform .18s ease, border-color .3s, box-shadow .18s';
+        card.addEventListener('mousemove', e => {
+          const r = card.getBoundingClientRect();
+          const x = (e.clientX - r.left) / r.width  - .5;
+          const y = (e.clientY - r.top)  / r.height - .5;
+          card.style.transform = `perspective(700px) rotateY(${x * 10}deg) rotateX(${-y * 8}deg) translateY(-4px) scale(1.01)`;
+          card.style.boxShadow = `${-x*14}px ${-y*14}px 40px rgba(108,99,255,.2)`;
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = '';
+          card.style.boxShadow = '';
+        });
       });
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = '';
-        card.style.boxShadow = '';
-      });
-    });
+    }
 
-    // ── 5. Konami code Easter egg ─────────────────────────────────
+    // ── 5. Easter egg — Konami (клавиатура) + 5 тапов по логотипу ─
     const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
     let kIdx = 0;
+    const openEgg = () => document.getElementById('eggOverlay').classList.add('open');
     document.addEventListener('keydown', e => {
-      if (e.key === KONAMI[kIdx]) {
-        kIdx++;
-        if (kIdx === KONAMI.length) {
-          kIdx = 0;
-          document.getElementById('eggOverlay').classList.add('open');
-        }
-      } else { kIdx = 0; }
+      kIdx = e.key === KONAMI[kIdx] ? kIdx + 1 : 0;
+      if (kIdx === KONAMI.length) { kIdx = 0; openEgg(); }
     });
+    // 5 быстрых тапов / кликов по логотипу DH. — для мобильных
+    let logoTaps = 0, logoTimer;
+    document.querySelector('.nav-logo').addEventListener('click', e => {
+      logoTaps++;
+      clearTimeout(logoTimer);
+      if (logoTaps >= 5) { logoTaps = 0; openEgg(); }
+      else logoTimer = setTimeout(() => { logoTaps = 0; }, 1500);
+    });
+    // подсветить подсказку при наведении
+    const eggHint = document.getElementById('eggHint');
+    if (eggHint) {
+      eggHint.addEventListener('mouseenter', () => eggHint.style.color = '#3a3a5a');
+      eggHint.addEventListener('mouseleave', () => eggHint.style.color = '');
+    }
   </script>
 </body>
 </html>
