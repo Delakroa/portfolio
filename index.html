@@ -952,25 +952,25 @@
           <div class="stat-card" onclick="this.classList.toggle('expanded')">
             <div class="stat-num" data-count="19" data-suffix="">19</div>
             <div class="stat-label" data-i18n="stat-1">Лет общего опыта работы</div>
-            <div class="stat-detail" data-i18n="stat-1-detail">10+ лет в промышленной инженерии — наладка оборудования, испытания, технические проекты. Последние 2+ года — QA Automation в IT.</div>
+            <div class="stat-detail" data-i18n="stat-1-detail">10 лет испытаний реального железа научили одному: системы ломаются там, где их не ждут. Это чутьё я принёс в QA — и оно работает лучше любого чеклиста.</div>
             <div class="stat-hint">нажми, чтобы узнать больше</div>
           </div>
           <div class="stat-card" onclick="this.classList.toggle('expanded')">
             <div class="stat-num" data-count="2" data-suffix="+">2+</div>
             <div class="stat-label" data-i18n="stat-2">Года в QA Automation</div>
-            <div class="stat-detail" data-i18n="stat-2-detail">Java · Playwright · Selenide · gRPC · Kafka · REST API · JUnit 5 · Allure · PostgreSQL</div>
+            <div class="stat-detail" data-i18n="stat-2-detail">За это время: построил фреймворк с нуля, покрыл 3 enterprise-продукта, настроил интеграцию с TMS и перестал писать Thread.sleep().</div>
             <div class="stat-hint">нажми, чтобы узнать больше</div>
           </div>
           <div class="stat-card" onclick="this.classList.toggle('expanded')">
             <div class="stat-num">front<br>+ back</div>
             <div class="stat-label" style="margin-top:2px" data-i18n="stat-3">Тестирование на текущем проекте</div>
-            <div class="stat-detail" data-i18n="stat-3-detail">UI-автоматизация (Playwright), REST API, gRPC, Kafka, PostgreSQL — полное покрытие стека.</div>
+            <div class="stat-detail" data-i18n="stat-3-detail">Один тест умеет: отправить REST, триггернуть gRPC, поймать Kafka-событие и проверить данные в PostgreSQL. Без переключений контекста.</div>
             <div class="stat-hint">нажми, чтобы узнать больше</div>
           </div>
           <div class="stat-card" onclick="this.classList.toggle('expanded')">
             <div class="stat-num">Tver</div>
             <div class="stat-label" data-i18n="stat-4">Удалённо / офис</div>
-            <div class="stat-detail" data-i18n="stat-4-detail">Работаю удалённо. Офис в Твери — по желанию. Готов к редким командировкам. Рассмотрю релокацию за счёт работодателя.</div>
+            <div class="stat-detail" data-i18n="stat-4-detail">Удалёнка — мой основной формат. Тверь рядом с Москвой — без проблем приеду на встречу. Рассмотрю релокацию за счёт работодателя.</div>
             <div class="stat-hint">нажми, чтобы узнать больше</div>
           </div>
         </div>
@@ -1731,10 +1731,10 @@
       'drawer-resume':  { ru: 'Резюме',                     en: 'Resume' },
 
       // Stat details
-      'stat-1-detail':  { ru: '10+ лет в промышленной инженерии — наладка оборудования, испытания, технические проекты. Последние 2+ года — QA Automation в IT.', en: '10+ years in industrial engineering — equipment setup, testing, technical projects. Last 2+ years in QA Automation in IT.' },
-      'stat-2-detail':  { ru: 'Java · Playwright · Selenide · gRPC · Kafka · REST API · JUnit 5 · Allure · PostgreSQL', en: 'Java · Playwright · Selenide · gRPC · Kafka · REST API · JUnit 5 · Allure · PostgreSQL' },
-      'stat-3-detail':  { ru: 'UI-автоматизация (Playwright), REST API, gRPC, Kafka, PostgreSQL — полное покрытие стека.', en: 'UI automation (Playwright), REST API, gRPC, Kafka, PostgreSQL — full stack coverage.' },
-      'stat-4-detail':  { ru: 'Работаю удалённо. Офис в Твери — по желанию. Готов к редким командировкам. Рассмотрю релокацию за счёт работодателя.', en: 'Working remotely. Office in Tver — optional. Open to occasional business trips. Will consider relocation covered by the employer.' },
+      'stat-1-detail':  { ru: '10 лет испытаний реального железа научили одному: системы ломаются там, где их не ждут. Это чутьё я принёс в QA — и оно работает лучше любого чеклиста.', en: '10 years of testing real hardware taught me one thing: systems break where you least expect. I brought that instinct to QA — and it works better than any checklist.' },
+      'stat-2-detail':  { ru: 'За это время: построил фреймворк с нуля, покрыл 3 enterprise-продукта, настроил интеграцию с TMS и перестал писать Thread.sleep().', en: 'In that time: built a framework from scratch, covered 3 enterprise products, set up TMS integration, and stopped writing Thread.sleep().' },
+      'stat-3-detail':  { ru: 'Один тест умеет: отправить REST, триггернуть gRPC, поймать Kafka-событие и проверить данные в PostgreSQL. Без переключений контекста.', en: 'One test can: send REST, trigger gRPC, catch a Kafka event, and validate data in PostgreSQL. No context switching.' },
+      'stat-4-detail':  { ru: 'Удалёнка — мой основной формат. Тверь рядом с Москвой — без проблем приеду на встречу. Рассмотрю релокацию за счёт работодателя.', en: 'Remote is my default mode. Tver is close to Moscow — happy to come in when needed. Open to relocation covered by the employer.' },
 
       // Contact
       'contact-label':  { ru: 'Контакты',           en: 'Contact' },
@@ -1859,15 +1859,19 @@
       el.dataset.animated = '1';
       const target = +el.dataset.count;
       const suffix = el.dataset.suffix || '';
-      const duration = target >= 10 ? 2400 : 1600; // медленнее для больших чисел
-      const start = performance.now();
-      function tick(now) {
-        const p = Math.min((now - start) / duration, 1);
-        const ease = 1 - Math.pow(1 - p, 4); // ease-out quart — плавнее в конце
-        el.textContent = Math.round(ease * target) + suffix;
-        if (p < 1) requestAnimationFrame(tick);
-      }
-      requestAnimationFrame(tick);
+      const duration = target >= 10 ? 3800 : 2200;
+      // Стартуем с задержкой 300ms — пользователь успевает заметить что начинается с 0
+      setTimeout(() => {
+        const start = performance.now();
+        function tick(now) {
+          const p = Math.min((now - start) / duration, 1);
+          // ease-in-out: сначала медленно, в середине быстро, в конце снова замедляется
+          const ease = p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+          el.textContent = Math.round(ease * target) + suffix;
+          if (p < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      }, 300);
     }
     const counterObserver = new IntersectionObserver(entries => {
       entries.forEach(e => {
