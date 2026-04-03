@@ -1880,7 +1880,7 @@
           if (el) animateCounter(el);
         }
       });
-    }, { threshold: 0.5 });
+    }, { threshold: 0.85, rootMargin: '0px 0px -60px 0px' });
     document.querySelectorAll('.stat-card').forEach(c => counterObserver.observe(c));
 
     // ── 2. Typewriter effect ─────────────────────────────────────
