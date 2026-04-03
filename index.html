@@ -148,6 +148,73 @@
     }
     .nav-links a:hover { color: var(--text); }
 
+    /* ── Contact drawer ───────────────────────────────────────── */
+    .contact-overlay {
+      position: fixed; inset: 0; z-index: 300;
+      background: rgba(5,5,10,.6);
+      backdrop-filter: blur(8px);
+      opacity: 0; pointer-events: none;
+      transition: opacity .35s ease;
+    }
+    .contact-overlay.open { opacity: 1; pointer-events: auto; }
+
+    .contact-drawer {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 301;
+      background: linear-gradient(170deg, #13131e 0%, #0e0e18 100%);
+      border-top: 1px solid rgba(108,99,255,.25);
+      border-radius: 28px 28px 0 0;
+      padding: 36px 40px 48px;
+      box-shadow: 0 -20px 80px rgba(108,99,255,.18);
+      transform: translateY(100%);
+      transition: transform .45s cubic-bezier(.22,.68,0,1.2);
+      max-width: 640px; margin: 0 auto; left: 50%; transform: translateX(-50%) translateY(100%);
+    }
+    .contact-drawer.open {
+      transform: translateX(-50%) translateY(0);
+    }
+    .drawer-handle {
+      width: 40px; height: 4px; border-radius: 4px;
+      background: rgba(255,255,255,.15); margin: 0 auto 28px;
+    }
+    .drawer-close {
+      position: absolute; top: 20px; right: 24px;
+      background: rgba(255,255,255,.06); border: 1px solid var(--border);
+      border-radius: 50%; width: 36px; height: 36px;
+      color: var(--muted); font-size: 1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s, color .2s;
+    }
+    .drawer-close:hover { background: rgba(255,255,255,.12); color: var(--text); }
+    .drawer-title {
+      font-size: 1.6rem; font-weight: 800; letter-spacing: -.5px;
+      margin-bottom: 6px;
+    }
+    .drawer-sub { font-size: .9rem; color: var(--muted); margin-bottom: 28px; }
+    .drawer-links {
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .drawer-link {
+      display: flex; align-items: center; gap: 16px;
+      padding: 14px 18px; border-radius: 14px;
+      background: rgba(255,255,255,.03); border: 1px solid var(--border);
+      text-decoration: none; color: var(--text);
+      transition: background .2s, border-color .2s, transform .2s;
+    }
+    .drawer-link:hover { background: rgba(108,99,255,.1); border-color: rgba(108,99,255,.4); transform: translateX(4px); }
+    .drawer-link-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; flex-shrink: 0;
+    }
+    .drawer-link-text { display: flex; flex-direction: column; gap: 2px; }
+    .drawer-link-label { font-size: .7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+    .drawer-link-value { font-size: .95rem; font-weight: 600; }
+
+    @media (max-width: 640px) {
+      .contact-drawer { padding: 28px 20px 40px; border-radius: 20px 20px 0 0; }
+      .drawer-title { font-size: 1.3rem; }
+    }
+
     /* ── Scroll-to-top button ─────────────────────────────────── */
     .scroll-top {
       position: fixed; bottom: 28px; right: 24px; z-index: 200;
@@ -691,7 +758,7 @@
           </p>
           <div class="hero-cta">
             <a href="#projects" class="btn-primary" data-i18n="hero-btn-projects">Посмотреть проекты →</a>
-            <a href="#contact" class="btn-outline" data-i18n="hero-btn-contact">Связаться</a>
+            <button class="btn-outline" onclick="openContactDrawer()" data-i18n="hero-btn-contact" style="cursor:pointer">Связаться</button>
             <a href="resume.pdf" download="Khalikov_Dmitrij_QA_Engineer.pdf" class="btn-outline" title="Скачать резюме PDF" data-i18n="hero-btn-pdf">⬇ Резюме PDF</a>
           </div>
         </div>
@@ -1222,6 +1289,52 @@
   <!-- Scroll-to-top -->
   <button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Наверх">↑</button>
 
+  <!-- Contact drawer -->
+  <div class="contact-overlay" id="contactOverlay" onclick="closeContactDrawer()"></div>
+  <div class="contact-drawer" id="contactDrawer">
+    <div class="drawer-handle"></div>
+    <button class="drawer-close" onclick="closeContactDrawer()" aria-label="Закрыть">✕</button>
+    <div class="drawer-title" data-i18n="drawer-title">Давайте общаться</div>
+    <p class="drawer-sub" data-i18n="drawer-sub">Выберите удобный способ связи</p>
+    <div class="drawer-links">
+      <a href="mailto:i@dhollow.ru" class="drawer-link">
+        <div class="drawer-link-icon" style="background:rgba(108,99,255,.15)">✉️</div>
+        <div class="drawer-link-text">
+          <span class="drawer-link-label" data-i18n="drawer-email">Email</span>
+          <span class="drawer-link-value">i@dhollow.ru</span>
+        </div>
+      </a>
+      <a href="https://t.me/delakroa" target="_blank" class="drawer-link">
+        <div class="drawer-link-icon" style="background:rgba(0,136,204,.15)">✈</div>
+        <div class="drawer-link-text">
+          <span class="drawer-link-label">Telegram</span>
+          <span class="drawer-link-value">@delakroa</span>
+        </div>
+      </a>
+      <a href="tel:+79201570416" class="drawer-link">
+        <div class="drawer-link-icon" style="background:rgba(67,233,123,.15)">📞</div>
+        <div class="drawer-link-text">
+          <span class="drawer-link-label" data-i18n="drawer-phone">Телефон</span>
+          <span class="drawer-link-value">+7 (920) 157-04-16</span>
+        </div>
+      </a>
+      <a href="https://hh.ru/resume/eca3cccfff096208640039ed1f675763776a5a" target="_blank" class="drawer-link social-lang-ru">
+        <div class="drawer-link-icon" style="background:rgba(255,51,51,.15)">💼</div>
+        <div class="drawer-link-text">
+          <span class="drawer-link-label" data-i18n="drawer-resume">Резюме</span>
+          <span class="drawer-link-value">hh.ru</span>
+        </div>
+      </a>
+      <a href="https://www.linkedin.com/in/дмитрий-халиков-15b93322b" target="_blank" class="drawer-link social-lang-en" style="display:none">
+        <div class="drawer-link-icon" style="background:rgba(10,102,194,.15)">in</div>
+        <div class="drawer-link-text">
+          <span class="drawer-link-label">LinkedIn</span>
+          <span class="drawer-link-value">Dmitrij Khalikov</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
   <script>
     // Scroll reveal
     const observer = new IntersectionObserver(
@@ -1374,6 +1487,13 @@
       'edu-3-spec':     { ru: 'Программирование ПЛК Siemens', en: 'Siemens PLC Programming' },
       'edu-4-spec':     { ru: 'Регулировщик РЭА и П', en: 'Electronic Equipment Adjuster' },
 
+      // Contact drawer
+      'drawer-title':   { ru: 'Давайте общаться',          en: 'Let\'s connect' },
+      'drawer-sub':     { ru: 'Выберите удобный способ связи', en: 'Choose a convenient way to reach me' },
+      'drawer-email':   { ru: 'Электронная почта',          en: 'Email' },
+      'drawer-phone':   { ru: 'Телефон',                    en: 'Phone' },
+      'drawer-resume':  { ru: 'Резюме',                     en: 'Resume' },
+
       // Stat details
       'stat-1-detail':  { ru: '10+ лет в промышленной инженерии — наладка оборудования, испытания, технические проекты. Последние 2+ года — QA Automation в IT.', en: '10+ years in industrial engineering — equipment setup, testing, technical projects. Last 2+ years in QA Automation in IT.' },
       'stat-2-detail':  { ru: 'Java · Playwright · Selenide · gRPC · Kafka · REST API · JUnit 5 · Allure · PostgreSQL', en: 'Java · Playwright · Selenide · gRPC · Kafka · REST API · JUnit 5 · Allure · PostgreSQL' },
@@ -1391,6 +1511,20 @@
     };
 
     let currentLang = 'ru';
+
+    function openContactDrawer() {
+      document.getElementById('contactOverlay').classList.add('open');
+      document.getElementById('contactDrawer').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeContactDrawer() {
+      document.getElementById('contactOverlay').classList.remove('open');
+      document.getElementById('contactDrawer').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeContactDrawer();
+    });
 
     function toggleNav() {
       document.getElementById('navLinks').classList.toggle('open');
